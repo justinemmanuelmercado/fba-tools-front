@@ -2,3 +2,7 @@ table-demo .data-table {
     width: 100px;
     overflow-y: auto;
 }
+
+table-demo .sortable {
+    cursor: pointer;
+}
