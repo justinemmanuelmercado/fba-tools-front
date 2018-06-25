@@ -1,4 +1,32 @@
-<div>
-    wtf
-    {{ $ctrl.data }}
+<div class="columns">
+    <div class="column is-11">
+        <div class="field">
+            <div class="control">
+                <input class="input is-primary" type="text" placeholder="`SELECT ...`" ng-model="$ctrl.sqlQuery">
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <button class="button" ng-click="$ctrl.loadData()">Query</button>
+    </div>
+</div>
+<div class="columns is-1">
+    <div class="column data-table">
+        <table class="table is-striped is-bordered">
+            <thead>
+                <tr>
+                    <th ng-repeat="columnTitle in $ctrl.tableHeaders">
+                        {{ columnTitle }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="data in $ctrl.tableData">
+                    <td ng-repeat="columnTitle in $ctrl.tableHeaders">
+                        {{ data[columnTitle] }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

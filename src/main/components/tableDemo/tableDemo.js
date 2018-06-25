@@ -1,15 +1,28 @@
+import './tableDemo.css';
+
 function ComponentController(rawRunnerService) {
     const vm = this;
-    vm.data = "none yet";
 
-    const activate = function() {
-        console.log('activate');
-        rawRunnerService.rawQuerySelect('SELECT * FROM mwsdb.sales_last_12_months').then((data) => {
-            console.log(data);
+    vm.sqlQuery = 'SELECT * FROM mwsdb.sales_last_12_months';
+    vm.tableData = [];
+    vm.tableHeaders = [];
+
+    vm.loadData = () => {
+        rawRunnerService.rawQuerySelect(vm.sqlQuery).then((data) => {
+            const [tableData] = data.data;
+            vm.tableData = tableData;
+            vm.tableHeaders = data.data[1].map(value => value.name);
+
+            console.log(vm.tableData, vm.tableHeaders);
         });
     };
 
+    const activate = function activate() {
+        vm.loadData();
+    };
+
     vm.$onInit = activate;
+
 }
 
 ComponentController.$inject = ['rawRunnerService'];

@@ -1,0 +1,4 @@
+table-demo .data-table {
+    width: 100px;
+    overflow-y: auto;
+}
