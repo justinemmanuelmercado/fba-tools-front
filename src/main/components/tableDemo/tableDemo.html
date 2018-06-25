@@ -1,32 +1,39 @@
 <div class="columns">
-    <div class="column is-11">
-        <div class="field">
-            <div class="control">
-                <input class="input is-primary" type="text" placeholder="`SELECT ...`" ng-model="$ctrl.sqlQuery">
-            </div>
-        </div>
+  <div class="column is-11">
+    <div class="field">
+      <div class="control">
+        <input class="input is-primary" type="text" placeholder="`SELECT ...`" ng-model="$ctrl.sqlQuery">
+      </div>
     </div>
+  </div>
+  <div class="column is-1">
+    <button class="button" ng-click="$ctrl.loadData()">Query</button>
+  </div>
+</div>
+<div class="data-table">
+  <div class="columns">
     <div class="column">
-        <button class="button" ng-click="$ctrl.loadData()">Query</button>
+      <table class="table is-striped is-bordered">
+        <thead>
+          <tr>
+            <th ng-repeat="columnTitle in $ctrl.tableHeaders">
+              {{ columnTitle }}
+              <select ng-model="$ctrl.objectFilter[columnTitle]" ng-change="$ctrl.change()">
+                <option ng-value="undefined">All</option>
+                <option ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]" ng-value="option">{{ option | limitTo: 25}} {{ option.length > 24 ? '...' : '' }}</option>
+              </select>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="data in $ctrl.tableData">
+            <td ng-repeat="columnTitle in $ctrl.tableHeaders">
+              {{ data[columnTitle] }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
-<div class="columns is-1">
-    <div class="column data-table">
-        <table class="table is-striped is-bordered">
-            <thead>
-                <tr>
-                    <th ng-repeat="columnTitle in $ctrl.tableHeaders">
-                        {{ columnTitle }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="data in $ctrl.tableData">
-                    <td ng-repeat="columnTitle in $ctrl.tableHeaders">
-                        {{ data[columnTitle] }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+
