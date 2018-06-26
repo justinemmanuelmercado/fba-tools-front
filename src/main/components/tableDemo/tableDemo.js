@@ -9,6 +9,9 @@ function ComponentController(rawRunnerService) {
   vm.tableHeaderFilters = {};
   vm.objectFilter = {};
 
+  vm.reverse = false;
+  vm.column = '';
+
   vm.change = () => console.log(vm.objectFilter);
 
   vm.loadData = () => {
@@ -16,7 +19,7 @@ function ComponentController(rawRunnerService) {
       const [tableData] = data.data;
       vm.tableData = tableData;
       vm.tableHeaders = data.data[1].map(value => value.name);
-
+     
       vm.createSelectData(vm.tableData, vm.tableHeaders);
       vm.createBlankObjectFilter(vm.tableHeaders);
     });
@@ -47,6 +50,32 @@ function ComponentController(rawRunnerService) {
       vm.tableHeaderFilters[currentTableHeader] = filterArray;
     }
   };
+
+ // called on header click
+ vm.sortColumn = (col) => {;
+    vm.column = col;
+    if(vm.reverse){
+      vm.reverse = false;
+      vm.reverseclass = 'arrow-up';
+    }else{
+      vm.reverse = true;
+      vm.reverseclass = 'arrow-down';
+    }
+ };
+ 
+ // remove and change class
+ vm.sortClass = (col) => {
+    if(vm.column == col ){
+      if(vm.reverse){
+        return 'arrow-down'; 
+      }else{
+        return 'arrow-up';
+      }
+    }else{
+      return '';
+    }
+ }; 
+
 
   vm.$onInit = function activate() {
     vm.loadData();

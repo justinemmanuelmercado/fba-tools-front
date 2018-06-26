@@ -10,6 +10,7 @@
     <button class="button" ng-click="$ctrl.loadData()">Query</button>
   </div>
 </div>
+<!-- TABLE -->
 <div class="data-table">
   <div class="columns">
     <div class="column">
@@ -17,7 +18,9 @@
         <thead>
           <tr>
             <th ng-repeat="columnTitle in $ctrl.tableHeaders">
-              {{ columnTitle }}
+                <span class="sortable" ng-click='$ctrl.sortColumn(columnTitle)' 
+                      ng-class='$ctrl.sortClass(columnTitle)'>{{ columnTitle }}
+                </span>
               <div class="field">
                 <div class="control">
                   <div class="select">
@@ -32,7 +35,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.objectFilter">
+          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.objectFilter | orderBy:$ctrl.column:$ctrl.reverse">
             <td ng-repeat="columnTitle in $ctrl.tableHeaders">
               {{ data[columnTitle] | limitTo: 155 }}{{ data[columnTitle].length > 155 ? '...' : '' }}
             </td>

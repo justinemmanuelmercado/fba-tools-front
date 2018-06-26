@@ -7,3 +7,28 @@ table-demo .data-table {
 table-demo .sortable {
     cursor: pointer;
 }
+
+table-demo th {
+    min-width: 200px;
+}
+
+table-demo .arrow-down:after,.arrow-up:after{
+    content: ' ';
+    position: relative;
+    left: 2px;
+    border: 8px solid transparent;
+   }
+   
+table-demo .arrow-down:after{
+    top: 10px;
+    border-top-color: rgb(124, 120, 120);
+}
+
+table-demo .arrow-up:after{
+    bottom: 15px;
+    border-bottom-color: rgb(124, 120, 120);
+}
+
+table-demo .arrow-down,.arrow-up{
+    padding-right: 10px;
+}
