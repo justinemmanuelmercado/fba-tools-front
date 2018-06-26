@@ -54,7 +54,7 @@ function ComponentController(rawRunnerService) {
 
 }
 
-ComponentController.$inject = ['rawRunnerService'];
+ComponentController.$inject = ['rawRunnerService', 'orderByFilter'];
 
 export default {
   template: require('./tableDemo.html'),

@@ -3,3 +3,7 @@ table-demo .data-table {
     height: 100vh;
     overflow-x: auto;
 }
+
+table-demo .sortable {
+    cursor: pointer;
+}
