@@ -2,7 +2,7 @@
   <div class="column is-11">
     <div class="field">
       <div class="control">
-        <input class="input is-primary" type="text" placeholder="`SELECT ...`" ng-model="$ctrl.sqlQuery">
+        <input class="input" type="text" placeholder="`SELECT ...`" ng-model="$ctrl.sqlQuery">
       </div>
     </div>
   </div>
@@ -18,17 +18,23 @@
           <tr>
             <th ng-repeat="columnTitle in $ctrl.tableHeaders">
               {{ columnTitle }}
-              <select ng-model="$ctrl.objectFilter[columnTitle]" ng-change="$ctrl.change()">
-                <option ng-value="undefined">All</option>
-                <option ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]" ng-value="option">{{ option | limitTo: 25}} {{ option.length > 24 ? '...' : '' }}</option>
-              </select>
+              <div class="field">
+                <div class="control">
+                  <div class="select">
+                    <select ng-model="$ctrl.objectFilter[columnTitle]" ng-change="$ctrl.change()">
+                      <option value="!!">All</option>
+                      <option ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]" ng-value="option">{{ option | limitTo: 25}} {{ option.length > 24 ? '...' : '' }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="data in $ctrl.tableData">
+          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.objectFilter">
             <td ng-repeat="columnTitle in $ctrl.tableHeaders">
-              {{ data[columnTitle] }}
+              {{ data[columnTitle] | limitTo: 155 }}{{ data[columnTitle].length > 155 ? '...' : '' }}
             </td>
           </tr>
         </tbody>
