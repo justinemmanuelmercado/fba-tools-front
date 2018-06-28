@@ -23,8 +23,8 @@
                 </span>
               <div class="field">
                 <div class="control">
-                  <div class="select">
-                    <select ng-model="$ctrl.objectFilter[columnTitle]" ng-change="$ctrl.change()">
+                  <div class="select is-multiple">
+                    <select ng-model="$ctrl.objectFilter[columnTitle]" ng-change="$ctrl.change()" multiple size="4">
                       <option value="!!">All</option>
                       <option ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]" ng-value="option">{{ option | limitTo: 25}} {{ option.length > 24 ? '...' : '' }}</option>
                     </select>
@@ -35,9 +35,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.objectFilter | orderBy:$ctrl.column:$ctrl.reverse">
+          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.multipleSelectFilter | orderBy: 'quantity' ">
             <td ng-repeat="columnTitle in $ctrl.tableHeaders">
-              {{ data[columnTitle] | limitTo: 155 }}{{ data[columnTitle].length > 155 ? '...' : '' }}
+              {{ data[columnTitle] | limitTo: $ctrl.maxLengthCell }}{{ data[columnTitle].length > $ctrl.maxLengthCell ? '...' : '' }}
             </td>
           </tr>
         </tbody>
