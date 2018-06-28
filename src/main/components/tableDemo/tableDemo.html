@@ -35,7 +35,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.multipleSelectFilter | orderBy: 'quantity' ">
+          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.multipleSelectFilter ">
             <td ng-repeat="columnTitle in $ctrl.tableHeaders">
               {{ data[columnTitle] | limitTo: $ctrl.maxLengthCell }}{{ data[columnTitle].length > $ctrl.maxLengthCell ? '...' : '' }}
             </td>

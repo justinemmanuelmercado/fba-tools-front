@@ -88,21 +88,26 @@ function ComponentController(rawRunnerService) {
   };
 
   vm.multipleSelectFilter = (item) => {
-    let isMatch = false;
+    let matchesAllHeaders = false;
+    const headersMatched = [];
 
     vm.tableHeaders.forEach((currentHeader) => {
       const itemValue = item[currentHeader];
       const filterValueArray = vm.objectFilter[currentHeader];
+      const isMatchForHeader = [];
 
-      if (filterValueArray.incl ||
+      if (filterValueArray.includes('!!') ||
         filterValueArray.includes(itemValue)) {
-        isMatch = true;
+        headersMatched.push(true);
       } else {
-        return false;
+        headersMatched.push(false);
       }
-      return isMatch;
+
     });
 
+    matchesAllHeaders = !headersMatched.includes(false);
+
+    return matchesAllHeaders;
   };
 
 }
