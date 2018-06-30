@@ -1,9 +1,11 @@
 import './tableDemo.css';
+import numeral from "numeral";
+//import numeral from 'numeral';
 
 function ComponentController(rawRunnerService) {
   const vm = this;
 
-  vm.sqlQuery = 'SELECT * FROM mwsdb._get_merchant_listings_all_data_';
+  vm.sqlQuery = 'SELECT * FROM mwsdb.sales_last_12_months';
   vm.tableData = [];
   vm.tableHeaders = [];
   vm.tableHeaderFilters = {};
@@ -16,18 +18,37 @@ function ComponentController(rawRunnerService) {
   vm.change = () => console.log(vm.objectFilter);
 
   vm.loadData = () => {
+
     rawRunnerService.rawQuerySelect(vm.sqlQuery).then((data) => {
       const [tableData] = data.data;
+
+      vm._parseNumericValues(tableData);
       vm.tableData = tableData;
+
       vm.tableHeaders = data.data[1].map(value => value.name);
-
-      console.log(vm.tableData);
-
+      
       vm.createSelectData(vm.tableData, vm.tableHeaders);
       vm.createBlankObjectFilter(vm.tableHeaders);
     });
 
   };
+  
+  vm._parseNumericValues = (tableData) => {
+
+    tableData.forEach((rowData, index) => {
+      var parsed_fee_data = '';
+      var parsed_sales_data = '';
+
+      //isip pa kung pano madedetect yung mga fields na dapat numerical
+      // for now 
+      parsed_fee_data = numeral(rowData.FEES);
+      parsed_sales_data = numeral(rowData.SALES);
+
+      tableData[index].FEES = parsed_fee_data.value();
+      tableData[index].SALES = parsed_sales_data.value();
+
+    });
+  }
 
   vm.createBlankObjectFilter = (tableHeaders) => {
     vm.objectFilter = {};

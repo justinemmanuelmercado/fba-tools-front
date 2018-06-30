@@ -20,7 +20,8 @@
   "dependencies": {
     "@uirouter/angularjs": "^1.0.18",
     "angular": "^1.6.10",
-    "bulma": "^0.7.1"
+    "bulma": "^0.7.1",
+    "numeral": "^2.0.6"
   },
   "devDependencies": {
     "angular-mocks": "^1.6.10",
