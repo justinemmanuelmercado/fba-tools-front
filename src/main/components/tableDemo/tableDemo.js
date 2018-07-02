@@ -1,15 +1,15 @@
+import numeral from 'numeral';
 import './tableDemo.css';
-import numeral from "numeral";
-//import numeral from 'numeral';
 
 function ComponentController(rawRunnerService) {
   const vm = this;
 
-  vm.sqlQuery = 'SELECT * FROM mwsdb.sales_last_12_months';
+  vm.sqlQuery = 'SELECT * FROM mwsdb.customers limit 100';
   vm.tableData = [];
   vm.tableHeaders = [];
   vm.tableHeaderFilters = {};
   vm.objectFilter = {};
+  vm.activeTables = {};
   vm.maxLengthCell = 100;
 
   vm.reverse = false;
@@ -26,13 +26,14 @@ function ComponentController(rawRunnerService) {
       vm.tableData = tableData;
 
       vm.tableHeaders = data.data[1].map(value => value.name);
-      
+
       vm.createSelectData(vm.tableData, vm.tableHeaders);
       vm.createBlankObjectFilter(vm.tableHeaders);
+      vm.createBlankActivesObject(vm.tableHeaders);
     });
 
   };
-  
+
   vm._parseNumericValues = (tableData) => {
 
     tableData.forEach((rowData, index) => {
@@ -54,6 +55,13 @@ function ComponentController(rawRunnerService) {
     vm.objectFilter = {};
     tableHeaders.forEach((header) => {
       vm.objectFilter[header] = ['!!'];
+    });
+  };
+
+  vm.createBlankActivesObject = (tableHeaders) => {
+    vm.activeTables = {};
+    tableHeaders.forEach((header) => {
+      vm.activeTables[header] = false;
     });
   };
 
@@ -92,17 +100,32 @@ function ComponentController(rawRunnerService) {
 
   // remove and change class
   vm.sortClass = (col) => {
-    if (vm.column == col) {
+    if (vm.column === col) {
       if (vm.reverse) {
         return 'arrow-down';
-      } else {
-        return 'arrow-up';
       }
-    } else {
-      return '';
+      return 'arrow-up';
     }
+
+    return '';
   };
 
+  vm.toggleSelection = (value, columnTitle) => {
+    const idx = vm.objectFilter[columnTitle].indexOf(value);
+    // Is currently selected
+    if (idx > -1) {
+      vm.objectFilter[columnTitle].splice(idx, 1);
+    } else {
+      vm.objectFilter[columnTitle].push(value);
+    }
+
+  };
+
+  vm.inSelection = (value, columnTitle) => {
+    const idx = vm.objectFilter[columnTitle].indexOf(value);
+
+    return idx > -1;
+  };
 
   vm.$onInit = function activate() {
     vm.loadData();
@@ -115,7 +138,6 @@ function ComponentController(rawRunnerService) {
     vm.tableHeaders.forEach((currentHeader) => {
       const itemValue = item[currentHeader];
       const filterValueArray = vm.objectFilter[currentHeader];
-      const isMatchForHeader = [];
 
       if (filterValueArray.includes('!!') ||
         filterValueArray.includes(itemValue)) {

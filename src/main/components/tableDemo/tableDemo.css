@@ -32,3 +32,15 @@ table-demo .arrow-up:after{
 table-demo .arrow-down,.arrow-up{
     padding-right: 10px;
 }
+
+table-demo .filter-dropdown {
+    max-height: 250px;
+    max-width: 200px;
+    overflow: auto;
+    word-break: break-all;
+}
+
+table-demo .table-header {
+    flex-direction: column;
+    align-items: center;
+}

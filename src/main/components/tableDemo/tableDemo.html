@@ -10,6 +10,7 @@
     <button class="button" ng-click="$ctrl.loadData()">Query</button>
   </div>
 </div>
+
 <!-- TABLE -->
 <div class="data-table">
   <div class="columns">
@@ -18,18 +19,39 @@
         <thead>
           <tr>
             <th ng-repeat="columnTitle in $ctrl.tableHeaders">
-                <span class="sortable" ng-click='$ctrl.sortColumn(columnTitle)' 
-                      ng-class='$ctrl.sortClass(columnTitle)'>{{ columnTitle }}
-                </span>
-              <div class="field">
-                <div class="control">
-                  <div class="select is-multiple">
-                    <select ng-model="$ctrl.objectFilter[columnTitle]" ng-change="$ctrl.change()" multiple size="4">
-                      <option value="!!">All</option>
-                      <option ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]" ng-value="option">{{ option | limitTo: 25}} {{ option.length > 24 ? '...' : '' }}</option>
-                    </select>
+              <div class="columns table-header">
+                <div class="column">
+                  <span class="sortable" ng-click='$ctrl.sortColumn(columnTitle)' ng-class='$ctrl.sortClass(columnTitle)'>{{ columnTitle }}
+                  </span>
+                </div>
+                <div class="column">
+
+                  <div class="dropdown" ng-class="{ 'is-active': $ctrl.activeTables[columnTitle] }">
+                    <div class="dropdown-trigger">
+                      <button class="button" aria-haspopup="true" ng-click="$ctrl.activeTables[columnTitle] = !$ctrl.activeTables[columnTitle]"
+                        aria-controls="dropdown-menu">
+                        <span>{{ columnTitle }}</span>
+                        <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                      <div class="dropdown-content filter-dropdown">
+                        <label class="checkbox dropdown-item">
+                          <input type="checkbox" ng-checked="$ctrl.inSelection('!!', columnTitle)" ng-click="$ctrl.toggleSelection('!!', columnTitle)"
+                            value="!!"> All
+                        </label>
+                        <label class="checkbox dropdown-item" ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]">
+                          <input type="checkbox" ng-checked="$ctrl.inSelection(option, columnTitle)" ng-click="$ctrl.toggleSelection(option, columnTitle)"
+                            value="{{ option }}"> {{ option }}
+                        </label>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
+
               </div>
             </th>
           </tr>

@@ -1,6 +1,7 @@
 import angular from 'angular';
 import uiRouter from '@uirouter/angularjs';
 import 'bulma/css/bulma.css';
+import '@fortawesome/fontawesome-free/js/all';
 
 import 'angular/angular-csp.css';
 import './index.scss';
