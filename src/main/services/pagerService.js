@@ -34,11 +34,9 @@ const service = function() {
         var endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
  
         // create an array of pages to ng-repeat in the pager control
-       // var pages = _.range(startPage, endPage + 1);
 
-        var pages = (startPage, endPage) => (
-            Array(endPage - startPage + 1).join(1).split(1).map(()=>startPage++)
-            );
+        //yung effect parang .range ng underscore.js
+        const pages = Array(endPage - startPage + 1).join(1).split(1).map(()=>startPage++);
  
         // return object with all pager properties required by the view
         return {

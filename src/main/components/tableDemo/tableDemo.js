@@ -30,7 +30,8 @@ function ComponentController(rawRunnerService, pagerService) {
       vm.tableData = tableData;
 
       vm.tableHeaders = data.data[1].map(value => value.name);
-
+      //set current page to 1
+      vm.setPage(1);
       vm.createSelectData(vm.tableData, vm.tableHeaders);
       vm.createBlankObjectFilter(vm.tableHeaders);
       vm.createBlankActivesObject(vm.tableHeaders);
@@ -42,13 +43,10 @@ function ComponentController(rawRunnerService, pagerService) {
     if (page < 1 || page > vm.pager.totalPages) {
         return;
     }
-    // get pager object from service
+    // get pager object from service (yung 5 number of record per page)
     vm.pager = pagerService.GetPager(vm.tableData.length, page, 5);
-    console.log(vm.pager);
-    
     // get current page of items
     vm.items = vm.tableData.slice(vm.pager.startIndex, vm.pager.endIndex + 1);
-    console.log(vm.items);
   };
   
   vm._parseNumericValues = (tableData) => {
@@ -146,7 +144,6 @@ function ComponentController(rawRunnerService, pagerService) {
 
   vm.$onInit = function activate() {
     vm.loadData();
-    vm.setPage(1);
   };
 
   vm.multipleSelectFilter = (item) => {
