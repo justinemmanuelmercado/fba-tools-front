@@ -1,10 +1,10 @@
 import numeral from 'numeral';
 import './tableDemo.css';
 
-function ComponentController(rawRunnerService) {
+function ComponentController(rawRunnerService, pagerService) {
   const vm = this;
 
-  vm.sqlQuery = 'SELECT * FROM mwsdb.customers limit 100';
+  vm.sqlQuery = 'SELECT * FROM mwsdb.sales_last_12_months';
   vm.tableData = [];
   vm.tableHeaders = [];
   vm.tableHeaderFilters = {};
@@ -15,10 +15,14 @@ function ComponentController(rawRunnerService) {
   vm.reverse = false;
   vm.column = '';
 
+  //pagination
+  vm.pager = {};
+  vm.items = [];
+  //vm.setPage = setPage;
+
   vm.change = () => console.log(vm.objectFilter);
 
   vm.loadData = () => {
-
     rawRunnerService.rawQuerySelect(vm.sqlQuery).then((data) => {
       const [tableData] = data.data;
 
@@ -34,6 +38,19 @@ function ComponentController(rawRunnerService) {
 
   };
 
+  vm.setPage = (page) => {
+    if (page < 1 || page > vm.pager.totalPages) {
+        return;
+    }
+    // get pager object from service
+    vm.pager = pagerService.GetPager(vm.tableData.length, page, 5);
+    console.log(vm.pager);
+    
+    // get current page of items
+    vm.items = vm.tableData.slice(vm.pager.startIndex, vm.pager.endIndex + 1);
+    console.log(vm.items);
+  };
+  
   vm._parseNumericValues = (tableData) => {
 
     tableData.forEach((rowData, index) => {
@@ -129,6 +146,7 @@ function ComponentController(rawRunnerService) {
 
   vm.$onInit = function activate() {
     vm.loadData();
+    vm.setPage(1);
   };
 
   vm.multipleSelectFilter = (item) => {
@@ -155,7 +173,7 @@ function ComponentController(rawRunnerService) {
 
 }
 
-ComponentController.$inject = ['rawRunnerService', 'orderByFilter'];
+ComponentController.$inject = ['rawRunnerService', 'pagerService'];
 
 export default {
   template: require('./tableDemo.html'),

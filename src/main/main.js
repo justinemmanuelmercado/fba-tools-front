@@ -15,6 +15,7 @@ import tableDemo from './components/tableDemo/tableDemo';
  */
 import rawRunnerService from './services/rawRunner';
 import requestsHelper from './services/serviceHelper/requestsHelper';
+import pagerService from './services/pagerService';
 
 const mainModule = angular.module('main', [])
     /**
@@ -29,6 +30,7 @@ const mainModule = angular.module('main', [])
     /**
      * Inject Services
      */
+    .factory('pagerService', pagerService)
     .factory('requestsHelper', requestsHelper)
     .factory('rawRunnerService', rawRunnerService);
 

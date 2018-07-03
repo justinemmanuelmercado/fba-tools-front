@@ -44,3 +44,7 @@ table-demo .table-header {
     flex-direction: column;
     align-items: center;
 }
+
+table-demo .pagination {
+    margin: 20px;
+}
