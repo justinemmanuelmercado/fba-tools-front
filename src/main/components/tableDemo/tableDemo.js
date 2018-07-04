@@ -4,7 +4,7 @@ import './tableDemo.css';
 function ComponentController(rawRunnerService, pagerService) {
   const vm = this;
 
-  vm.sqlQuery = 'SELECT * FROM mwsdb.sales_last_12_months';
+  vm.sqlQuery = 'SELECT * FROM mwsdb.customers limit 100';
   vm.tableData = [];
   vm.tableHeaders = [];
   vm.tableHeaderFilters = {};
@@ -41,14 +41,19 @@ function ComponentController(rawRunnerService, pagerService) {
 
   vm.setPage = (page) => {
     if (page < 1 || page > vm.pager.totalPages) {
-        return;
+      return;
     }
     // get pager object from service (yung 5 number of record per page)
     vm.pager = pagerService.GetPager(vm.tableData.length, page, 5);
+<<<<<<< HEAD
+=======
+    console.log(vm.pager);
+
+>>>>>>> 1ff02b5bb568e553813dd5227cde60119e0915de
     // get current page of items
     vm.items = vm.tableData.slice(vm.pager.startIndex, vm.pager.endIndex + 1);
   };
-  
+
   vm._parseNumericValues = (tableData) => {
 
     tableData.forEach((rowData, index) => {
@@ -126,10 +131,26 @@ function ComponentController(rawRunnerService, pagerService) {
   };
 
   vm.toggleSelection = (value, columnTitle) => {
+
+    const indexOfAll = vm.objectFilter[columnTitle].indexOf('!!');
+
+    if (value === '!!' && indexOfAll === -1) {
+      vm.objectFilter[columnTitle] = ['!!'];
+      return;
+    }
+
+    if (indexOfAll > -1) {
+      vm.objectFilter[columnTitle].splice(indexOfAll, 1);
+    }
+
+
     const idx = vm.objectFilter[columnTitle].indexOf(value);
     // Is currently selected
     if (idx > -1) {
       vm.objectFilter[columnTitle].splice(idx, 1);
+      if (vm.objectFilter[columnTitle].length === 0) {
+        vm.objectFilter[columnTitle] = ['!!'];
+      }
     } else {
       vm.objectFilter[columnTitle].push(value);
     }
