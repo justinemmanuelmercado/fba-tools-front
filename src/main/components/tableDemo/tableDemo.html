@@ -40,11 +40,11 @@
                       <div class="dropdown-content filter-dropdown">
                         <label class="checkbox dropdown-item">
                           <input type="checkbox" ng-checked="$ctrl.inSelection('!!', columnTitle)" ng-click="$ctrl.toggleSelection('!!', columnTitle)"
-                            value="!!"> All
+                            ng-value="'!!'"> All
                         </label>
                         <label class="checkbox dropdown-item" ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]">
                           <input type="checkbox" ng-checked="$ctrl.inSelection(option, columnTitle)" ng-click="$ctrl.toggleSelection(option, columnTitle)"
-                            value="{{ option }}"> {{ option }}
+                            ng-value="option"> {{ option }}
                         </label>
                       </div>
                     </div>
