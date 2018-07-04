@@ -45,11 +45,6 @@ function ComponentController(rawRunnerService, pagerService) {
     }
     // get pager object from service (yung 5 number of record per page)
     vm.pager = pagerService.GetPager(vm.tableData.length, page, 5);
-<<<<<<< HEAD
-=======
-    console.log(vm.pager);
-
->>>>>>> 1ff02b5bb568e553813dd5227cde60119e0915de
     // get current page of items
     vm.items = vm.tableData.slice(vm.pager.startIndex, vm.pager.endIndex + 1);
   };
