@@ -66,27 +66,88 @@
   </div>
 </div>
 
+<!-- SAMPLE TABLE WITH PAGINATION -->
+<br><br>
+
+<div class="data-table">
+  <div class="columns">
+    <div class="column">
+      <table class="table is-striped is-bordered">
+        <thead>
+          <tr>
+            <th ng-repeat="columnTitle in $ctrl.tableHeaders">
+              <div class="columns table-header">
+                <div class="column">
+                  <span class="sortable" ng-click='$ctrl.sortColumn(columnTitle)' ng-class='$ctrl.sortClass(columnTitle)'>{{ columnTitle }}
+                  </span>
+                </div>
+                <div class="column">
+
+                  <div class="dropdown" ng-class="{ 'is-active': $ctrl.activeTables[columnTitle] }">
+                    <div class="dropdown-trigger">
+                      <button class="button" aria-haspopup="true" ng-click="$ctrl.activeTables[columnTitle] = !$ctrl.activeTables[columnTitle]"
+                        aria-controls="dropdown-menu">
+                        <span>{{ columnTitle }}</span>
+                        <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                      <div class="dropdown-content filter-dropdown">
+                        <label class="checkbox dropdown-item">
+                          <input type="checkbox" ng-checked="$ctrl.inSelection('!!', columnTitle)" ng-click="$ctrl.toggleSelection('!!', columnTitle)"
+                            value="!!"> All
+                        </label>
+                        <label class="checkbox dropdown-item" ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]">
+                          <input type="checkbox" ng-checked="$ctrl.inSelection(option, columnTitle)" ng-click="$ctrl.toggleSelection(option, columnTitle)"
+                            value="{{ option }}"> {{ option }}
+                        </label>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="data in $ctrl.items | filter: $ctrl.multipleSelectFilter | orderBy: $ctrl.column : $ctrl.reverse ">
+            <td ng-repeat="columnTitle in $ctrl.tableHeaders">
+              {{ data[columnTitle] | limitTo: $ctrl.maxLengthCell }}{{ data[columnTitle].length > $ctrl.maxLengthCell ? '...' : '' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-  <a class="pagination-previous">Previous</a>
-  <a class="pagination-next">Next page</a>
+
+  <a class="pagination-previous" ng-click="$ctrl.setPage($ctrl.pager.currentPage - 1)">Previous</a>
+    
+  <a class="pagination-next" ng-click="$ctrl.setPage($ctrl.pager.currentPage + 1)">Next page</a>
+
   <ul class="pagination-list">
-    <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+<!--
+    <li><a class="pagination-link" aria-label="Goto page 1" ng-click="$ctrl.setPage(1)">1</a></li>
     <li><span class="pagination-ellipsis">&hellip;</span></li>
     <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-    <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
+  -->
+    <li ng-repeat="page in $ctrl.pager.pages"><a class="pagination-link {{$ctrl.pager.currentPage === page ? 'is-current' : ''}} " ng-click="$ctrl.setPage(page)" aria-label="Page {{page}}" aria-current="page">{{page}}</a></li>
+    <!--
     <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
     <li><span class="pagination-ellipsis">&hellip;</span></li>
-    <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
+    <li><a class="pagination-link" aria-label="Goto page 86" ng-click="$ctrl.setPage($ctrl.pager.totalPages)">{{$ctrl.pager.totalPages}}</a></li>
+    -->    
   </ul>
 </nav>
 
-
+<!--
  <div class="text-center">
-  {{$ctrl.items}}
-  <!-- items being paged -->
-  <div ng-repeat="item in $ctrl.items">Item {{item}}</div>
-   
-  <!-- pager -->
   <ul ng-if="$ctrl.pager.pages.length" class="pagination">
       <li ng-class="{disabled:$ctrl.pager.currentPage === 1}">
           <a ng-click="$ctrl.setPage(1)">First</a>
@@ -105,4 +166,4 @@
       </li>
   </ul>
 </div> 
-
+-->
