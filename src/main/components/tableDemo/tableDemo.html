@@ -38,13 +38,11 @@
                     </div>
                     <div class="dropdown-menu" id="dropdown-menu" role="menu">
                       <div class="dropdown-content filter-dropdown">
-                        <label class="checkbox dropdown-item">
-                          <input type="checkbox" ng-checked="$ctrl.inSelection('!!', columnTitle)" ng-click="$ctrl.toggleSelection('!!', columnTitle)"
-                            ng-value="'!!'"> All
+                        <label class="checkbox dropdown-item" ng-class="{'has-text-grey-lighter': $ctrl.objectFilter[columnTitle].length !== $ctrl.tableHeaderFilters[columnTitle].length}">
+                          <input type="checkbox" ng-checked="$ctrl.objectFilter[columnTitle].length === $ctrl.tableHeaderFilters[columnTitle].length" ng-click="$ctrl.toggleAllSelection(columnTitle)"> All
                         </label>
                         <label class="checkbox dropdown-item" ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]">
-                          <input type="checkbox" ng-checked="$ctrl.inSelection(option, columnTitle)" ng-click="$ctrl.toggleSelection(option, columnTitle)"
-                            ng-value="option"> {{ option }}
+                          <input type="checkbox" ng-checked="$ctrl.inSelection(option, columnTitle)" ng-click="$ctrl.toggleSelection(option, columnTitle)"> {{ option }}
                         </label>
                       </div>
                     </div>

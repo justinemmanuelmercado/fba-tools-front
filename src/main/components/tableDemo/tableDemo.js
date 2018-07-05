@@ -10,6 +10,7 @@ function ComponentController(rawRunnerService, pagerService) {
   vm.tableHeaderFilters = {};
   vm.objectFilter = {};
   vm.activeTables = {};
+  vm.headerAllOption = {};
   vm.maxLengthCell = 100;
 
   vm.reverse = false;
@@ -32,7 +33,7 @@ function ComponentController(rawRunnerService, pagerService) {
       vm.tableHeaders = data.data[1].map(value => value.name);
 
       vm.createSelectData(vm.tableData, vm.tableHeaders);
-      vm.createBlankObjectFilter(vm.tableHeaders);
+      vm.createDefaultObjectFilter(vm.tableHeaders);
       vm.createBlankActivesObject(vm.tableHeaders);
     });
 
@@ -68,10 +69,10 @@ function ComponentController(rawRunnerService, pagerService) {
     });
   }
 
-  vm.createBlankObjectFilter = (tableHeaders) => {
+  vm.createDefaultObjectFilter = (tableHeaders) => {
     vm.objectFilter = {};
     tableHeaders.forEach((header) => {
-      vm.objectFilter[header] = ['!!'];
+      vm.objectFilter[header] = angular.copy(vm.tableHeaderFilters[header]);
     });
   };
 
@@ -81,6 +82,7 @@ function ComponentController(rawRunnerService, pagerService) {
       vm.activeTables[header] = false;
     });
   };
+
 
   vm.createSelectData = (tableData, tableHeaders) => {
     for (let i = 0; i < tableHeaders.length; i++) {
@@ -112,7 +114,6 @@ function ComponentController(rawRunnerService, pagerService) {
       vm.reverse = true;
       vm.reverseclass = 'arrow-down';
     }
-
   };
 
   // remove and change class
@@ -128,36 +129,27 @@ function ComponentController(rawRunnerService, pagerService) {
   };
 
   vm.toggleSelection = (value, columnTitle) => {
-
-    const indexOfAll = vm.objectFilter[columnTitle].indexOf('!!');
-
-    if (value === '!!' && indexOfAll === -1) {
-      vm.objectFilter[columnTitle] = ['!!'];
-      return;
-    }
-
-    if (indexOfAll > -1) {
-      vm.objectFilter[columnTitle].splice(indexOfAll, 1);
-    }
-
-
     const idx = vm.objectFilter[columnTitle].indexOf(value);
     // Is currently selected
     if (idx > -1) {
       vm.objectFilter[columnTitle].splice(idx, 1);
-      if (vm.objectFilter[columnTitle].length === 0) {
-        vm.objectFilter[columnTitle] = ['!!'];
-      }
     } else {
       vm.objectFilter[columnTitle].push(value);
     }
-
   };
 
   vm.inSelection = (value, columnTitle) => {
     const idx = vm.objectFilter[columnTitle].indexOf(value);
 
     return idx > -1;
+  };
+
+  vm.toggleAllSelection = (columnTitle) => {
+    if (vm.tableHeaderFilters[columnTitle].length === vm.objectFilter[columnTitle].length) {
+      vm.objectFilter[columnTitle] = [];
+      return;
+    }
+    vm.objectFilter[columnTitle] = angular.copy(vm.tableHeaderFilters[columnTitle]);
   };
 
   vm.$onInit = function activate() {
@@ -169,17 +161,27 @@ function ComponentController(rawRunnerService, pagerService) {
     let matchesAllHeaders = false;
     const headersMatched = [];
 
+    // for(let i = 0; i < vm.tableHeaders.length; i++){
+    //   const currentHeader = vm.tableHeaders[i];
+    //   const itemValue = item[currentHeader];
+    //   const filterValueArray = vm.objectFilter[currentHeader];
+
+    //   if (filterValueArray.includes(itemValue)) {
+    //     headersMatched.push(true);
+    //   } else {
+    //     headersMatched.push(false);
+    //   }
+    // }
+
     vm.tableHeaders.forEach((currentHeader) => {
       const itemValue = item[currentHeader];
       const filterValueArray = vm.objectFilter[currentHeader];
 
-      if (filterValueArray.includes('!!') ||
-        filterValueArray.includes(itemValue)) {
+      if (filterValueArray.includes(itemValue)) {
         headersMatched.push(true);
       } else {
         headersMatched.push(false);
       }
-
     });
 
     matchesAllHeaders = !headersMatched.includes(false);
