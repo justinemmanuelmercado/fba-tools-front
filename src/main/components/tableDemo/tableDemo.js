@@ -1,43 +1,85 @@
 import numeral from 'numeral';
 import './tableDemo.css';
 
-function ComponentController(rawRunnerService, pagerService) {
+function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $scope) {
   const vm = this;
 
-  vm.sqlQuery = 'SELECT * FROM mwsdb.customers limit 100';
+  // Data
+  vm.sqlQuery = 'select * from sales_last_12_months';
   vm.tableData = [];
   vm.tableHeaders = [];
   vm.tableHeaderFilters = {};
   vm.objectFilter = {};
   vm.activeTables = {};
   vm.headerAllOption = {};
-  vm.maxLengthCell = 100;
-
+  vm.typeMap = {};
   vm.reverse = false;
   vm.column = '';
-
-  //pagination
   vm.pager = {};
   vm.items = [];
-  //vm.setPage = setPage;
+
+  // Constants
+  vm.maxLengthCell = 100;
+
+
+  //vm.setPage = setPage; // @todo temporarily removed
 
   vm.change = () => console.log(vm.objectFilter);
 
   vm.loadData = () => {
     rawRunnerService.rawQuerySelect(vm.sqlQuery).then((data) => {
-      const [tableData] = data.data;
 
-      vm._parseNumericValues(tableData);
-      vm.tableData = tableData;
+      /**
+       * Set index 0 of data.data as const tableData
+       * and index 1 of data.data as const rawHeaderData
+       */
+      const [tableData, rawHeaderData] = data.data;
 
-      vm.tableHeaders = data.data[1].map(value => value.name);
-      //set current page to 1
+      const tempTableData = tableData;
+
+      vm.tableHeaders = rawHeaderData.map(value => value.name);
+
+      /**
+       * Set current page to 1
+       */
       vm.setPage(1);
-      vm.createSelectData(vm.tableData, vm.tableHeaders);
-      vm.createDefaultObjectFilter(vm.tableHeaders);
-      vm.createBlankActivesObject(vm.tableHeaders);
-    });
 
+      /**
+       *  Set default data
+       */
+      vm.createBlankActivesObject(vm.tableHeaders);
+      
+      vm.createTypeMapper(tempTableData, vm.tableHeaders).then((typeMap) => {
+        if (Object.values(typeMap).includes('number')) {
+          const numberHeaders = [];
+          for (let i = 0; i < vm.tableHeaders.length; i++) {
+            const currentTableHeader = vm.tableHeaders[i];
+            const currentTableHeaderType = vm.typeMap[currentTableHeader];
+            
+            if (currentTableHeaderType !== 'number') {
+              continue;
+            }
+            
+            numberHeaders.push(currentTableHeader);
+          }
+          
+          vm.tableData = tempTableData.map((row) => {
+            numberHeaders.forEach((header) => {
+              row[header] = numeral(row[header]).value();
+            });
+            
+            return row;
+          });
+          
+          console.log(vm.tableData);
+          vm.createSelectData(vm.tableData, vm.tableHeaders);
+          vm.createDefaultObjectFilter(vm.tableHeaders);
+        } else {
+          vm.tableData = tempTableData;
+        }
+        $scope.$digest();
+      });
+    });
   };
 
   vm.setPage = (page) => {
@@ -49,23 +91,6 @@ function ComponentController(rawRunnerService, pagerService) {
     // get current page of items
     vm.items = vm.tableData.slice(vm.pager.startIndex, vm.pager.endIndex + 1);
   };
-
-  vm._parseNumericValues = (tableData) => {
-
-    tableData.forEach((rowData, index) => {
-      var parsed_fee_data = '';
-      var parsed_sales_data = '';
-
-      //isip pa kung pano madedetect yung mga fields na dapat numerical
-      // for now 
-      parsed_fee_data = numeral(rowData.FEES);
-      parsed_sales_data = numeral(rowData.SALES);
-
-      tableData[index].FEES = parsed_fee_data.value();
-      tableData[index].SALES = parsed_sales_data.value();
-
-    });
-  }
 
   vm.createDefaultObjectFilter = (tableHeaders) => {
     vm.objectFilter = {};
@@ -155,40 +180,40 @@ function ComponentController(rawRunnerService, pagerService) {
   };
 
   vm.multipleSelectFilter = (item) => {
-    let matchesAllHeaders = false;
-    const headersMatched = [];
-
-    // for(let i = 0; i < vm.tableHeaders.length; i++){
-    //   const currentHeader = vm.tableHeaders[i];
-    //   const itemValue = item[currentHeader];
-    //   const filterValueArray = vm.objectFilter[currentHeader];
-
-    //   if (filterValueArray.includes(itemValue)) {
-    //     headersMatched.push(true);
-    //   } else {
-    //     headersMatched.push(false);
-    //   }
-    // }
-
-    vm.tableHeaders.forEach((currentHeader) => {
+    for (let i = 0; i < vm.tableHeaders.length; i++) {
+      const currentHeader = vm.tableHeaders[i];
       const itemValue = item[currentHeader];
       const filterValueArray = vm.objectFilter[currentHeader];
 
-      if (filterValueArray.includes(itemValue)) {
-        headersMatched.push(true);
-      } else {
-        headersMatched.push(false);
+      if (!filterValueArray.includes(itemValue)) {
+        return false;
       }
-    });
-
-    matchesAllHeaders = !headersMatched.includes(false);
-
-    return matchesAllHeaders;
+    }
+    console.log(item);
+    return true;
   };
 
+  vm.createTypeMapper = (tableData, tableHeaders) => {
+    return new Promise((resolve) => {
+      for (let i = 0; i < tableHeaders.length; i++) {
+        const currentHeader = tableHeaders[i];
+        let testRowIndex = 0;
+        let testData = tableData[testRowIndex][currentHeader];
+
+        while (!testData && testData !== 0) {
+          testRowIndex++;
+          testData = tableData[testRowIndex][currentHeader];
+        }
+
+        vm.typeMap[currentHeader] = dataTypeHelper.identifyDataType(testData);
+      }
+
+      resolve(vm.typeMap);
+    });
+  };
 }
 
-ComponentController.$inject = ['rawRunnerService', 'pagerService'];
+ComponentController.$inject = ['rawRunnerService', 'pagerService', 'dataTypeHelper', '$scope'];
 
 export default {
   template: require('./tableDemo.html'),

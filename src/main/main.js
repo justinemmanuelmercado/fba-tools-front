@@ -16,6 +16,7 @@ import tableDemo from './components/tableDemo/tableDemo';
 import rawRunnerService from './services/rawRunner';
 import requestsHelper from './services/serviceHelper/requestsHelper';
 import pagerService from './services/pagerService';
+import dataTypeHelper from './services/commonHelper/dataTypeHelper';
 
 const mainModule = angular.module('main', [])
     /**
@@ -32,6 +33,7 @@ const mainModule = angular.module('main', [])
      */
     .factory('pagerService', pagerService)
     .factory('requestsHelper', requestsHelper)
-    .factory('rawRunnerService', rawRunnerService);
+    .factory('rawRunnerService', rawRunnerService)
+    .factory('dataTypeHelper', dataTypeHelper);
 
 export default mainModule.name;

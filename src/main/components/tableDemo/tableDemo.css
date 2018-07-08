@@ -1,50 +1,60 @@
 table-demo .data-table {
-    width: 100%;
-    height: 100vh;
-    overflow-x: auto;
-}
-
-table-demo .sortable {
-    cursor: pointer;
+  width: 100%;
+  height: 100vh;
+  overflow-x: auto;
 }
 
 table-demo th {
-    min-width: 200px;
+  min-width: 200px;
 }
 
-table-demo .arrow-down:after,.arrow-up:after{
-    content: ' ';
-    position: relative;
-    left: 2px;
-    border: 8px solid transparent;
-   }
-   
-table-demo .arrow-down:after{
-    top: 10px;
-    border-top-color: rgb(124, 120, 120);
+table-demo .arrow-down:after,
+.arrow-up:after {
+  content: ' ';
+  position: relative;
+  left: 2px;
+  border: 8px solid transparent;
 }
 
-table-demo .arrow-up:after{
-    bottom: 15px;
-    border-bottom-color: rgb(124, 120, 120);
+table-demo .arrow-down:after {
+  top: 10px;
+  border-top-color: rgb(124, 120, 120);
 }
 
-table-demo .arrow-down,.arrow-up{
-    padding-right: 10px;
+table-demo .arrow-up:after {
+  bottom: 15px;
+  border-bottom-color: rgb(124, 120, 120);
+}
+
+table-demo .arrow-down,
+.arrow-up {
+  padding-right: 10px;
 }
 
 table-demo .filter-dropdown {
-    max-height: 250px;
-    max-width: 200px;
-    overflow: auto;
-    word-break: break-all;
+  max-height: 250px;
+  max-width: 200px;
+  overflow: auto;
+  word-break: break-all;
+}
+
+table-demo .table-header-container {
+  flex-direction: row;
+  align-items: center;
 }
 
 table-demo .table-header {
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+table-demo .table-header > div {
+    margin-left: 2.5px;
+    margin-right: 2.5px;
 }
 
 table-demo .pagination {
-    margin: 20px;
+  margin: 20px;
 }
