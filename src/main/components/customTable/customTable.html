@@ -1,0 +1,57 @@
+<!-- TABLE -->
+<div class="data-table">
+  <div class="columns">
+    <div class="column">
+      <table class="table is-striped is-bordered">
+        <thead>
+          <tr>
+            <th ng-repeat="columnTitle in $ctrl.tableHeaders">
+              <div class="columns table-header-container">
+                <div class="column table-header">
+                  <div>
+                    <span ng-click='$ctrl.sortColumn(columnTitle)' ng-class='$ctrl.sortClass(columnTitle)'>{{ columnTitle }}
+                    </span>
+                  </div>
+                  <div ng-if="$ctrl.typeMap[columnTitle] !== 'image'" class="dropdown" ng-class="{ 'is-active': $ctrl.activeTables[columnTitle] }">
+                    <div class="dropdown-trigger">
+                      <button class="button" aria-haspopup="true" ng-click="$ctrl.activeTables[columnTitle] = !$ctrl.activeTables[columnTitle]"
+                        aria-controls="dropdown-menu">
+                        <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                      <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div class="dropdown-content filter-dropdown">
+                          <label class="checkbox dropdown-item" ng-class="{'has-text-grey-lighter': $ctrl.objectFilter[columnTitle].length !== $ctrl.tableHeaderFilters[columnTitle].length}">
+                            <input type="checkbox" ng-checked="$ctrl.objectFilter[columnTitle].length === $ctrl.tableHeaderFilters[columnTitle].length"
+                              ng-click="$ctrl.toggleAllSelection(columnTitle)"> All
+                          </label>
+                          <label class="checkbox dropdown-item" ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]">
+                            <input type="checkbox" ng-checked="$ctrl.inSelection(option, columnTitle)" ng-click="$ctrl.toggleSelection(option, columnTitle)"> {{ option }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.multipleSelectFilter | orderBy: $ctrl.column : $ctrl.reverse ">
+            <td ng-repeat="columnTitle in $ctrl.tableHeaders">
+              <span ng-if="$ctrl.typeMap[columnTitle] === 'string'">
+                {{ data[columnTitle] | limitTo: $ctrl.maxLengthCell }}{{ data[columnTitle].length > $ctrl.maxLengthCell ? '...' : '' }}
+              </span>
+              <span ng-if="$ctrl.typeMap[columnTitle] === 'number'">
+                {{ data[columnTitle] | number }}
+              </span>
+              <img ng-src="{{ data[columnTitle] }}" alt="data[columnTitle]" ng-if="$ctrl.typeMap[columnTitle] === 'image'">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

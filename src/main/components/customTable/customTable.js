@@ -215,8 +215,10 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
 ComponentController.$inject = ['rawRunnerService', 'pagerService', 'dataTypeHelper', '$scope'];
 
 export default {
-  template: require('./tableDemo.html'),
+  template: require('./customTable.html'),
   controllerAs: '$ctrl',
   controller: ComponentController,
+  bindings: {
+    query: '=',
+  },
 };
-
