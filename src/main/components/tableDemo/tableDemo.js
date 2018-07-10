@@ -34,27 +34,27 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
   vm.viewsAvailable = [
     {
       label: 'Today',
-      viewName: 'sales_last_12_months',
+      viewName: 'sales_today',
     },
     {
       label: 'Yesterday',
-      viewName: 'sales_last_12_months',
+      viewName: 'sales_yesterday',
     },
     {
       label: 'Last 7 days',
-      viewName: 'sales_last_12_months',
+      viewName: 'sales_last_7_days',
     },
     {
       label: 'Week to date',
-      viewName: 'sales_last_12_months',
+      viewName: 'sales_week_to_date',
     },
     {
       label: 'Last 30 days',
-      viewName: 'sales_last_12_months',
+      viewName: 'sales_last_30_days',
     },
     {
       label: 'Month to date',
-      viewName: 'sales_last_12_months',
+      viewName: 'sales_month_to_date',
     },
     {
       label: 'Last 12 months',
@@ -62,7 +62,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
     },
     {
       label: 'Year to date',
-      viewName: 'sales_last_12_months',
+      viewName: 'sales_year_to_date',
     },
   ];
 
