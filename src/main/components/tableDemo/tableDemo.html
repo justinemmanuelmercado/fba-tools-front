@@ -11,11 +11,11 @@
   </div>
 </div> -->
 
-<div class="tabs is-fullwidth is-small">
+<div class="tabs is-fullwidth is-toggle is-small">
   <ul>
     <li ng-class="{'is-active': $ctrl.isViewActive(view)}" ng-repeat="view in $ctrl.viewsAvailable" ng-click="$ctrl.openView(view)">
       <a>
-        <span>{{ view.label }}</span>
+        <span>{{ view.label }} ABC</span>
       </a>
     </li>
   </ul>

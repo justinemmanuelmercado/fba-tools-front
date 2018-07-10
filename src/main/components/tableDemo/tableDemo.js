@@ -81,10 +81,29 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
        */
       const [tableData, rawHeaderData] = data.data;
 
-      const tempTableData = tableData;
+      let tempTableData = tableData;
 
+      /**
+       * @todo create new table map for headers taken from query
+       * and create new string headers that are property safe
+       * create map object
+       */
+      console.log(vm.tableHeaders);
       vm.tableHeaders = rawHeaderData.map(value => value.name);
-
+      vm.tableHeaders.forEach(header => {
+        
+        let newHeader = header.replace(/\W/g, '');
+        console.log(newHeader);
+        if(newHeader !== header){  
+          tempTableData.forEach((row, index) => {
+            row[newHeader] = row[header];
+            delete row[header];
+          })
+          vm.tableHeaders.push(newHeader);
+          vm.tableHeaders.splice(vm.tableHeaders.indexOf(header), 1);
+        }
+      })
+      
       /**
        * Set current page to 1
        */
@@ -200,6 +219,17 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
     vm.tableOptions.sort = positiveColumn;
   };
 
+  // vm.sortColumn = (col) => {
+  //   vm.column = col;
+  //   if (vm.reverse) {
+  //     vm.reverse = false;
+  //     vm.reverseclass = 'arrow-up';
+  //   } else {
+  //     vm.reverse = true;
+  //     vm.reverseclass = 'arrow-down';
+  //   }
+  // }
+
   // remove and change class
   vm.sortClass = (col) => {
     if (vm.column === col) {
@@ -282,7 +312,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
   vm.getSortStatus = (columnTitle, direction) => {
     const positiveColumn = columnTitle;
     const negativeColumn = `-${columnTitle}`;
-    console.log(columnTitle);
+  
     /**
      * Check if negative sorting
      */
@@ -301,6 +331,28 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
      */
       return direction === 'minus';
   };
+  // vm.getSortStatus = (columnTitle, direction) => {
+  //   console.log(columnTitle, vm.column);
+  //   /**
+  //    * Check if not sorted with current column
+  //    */
+  //   if(columnTitle !== vm.column){
+  //     return direction === 'minus';
+  //   }
+
+  //   /**
+  //    * Check if negative sorting
+  //    */
+  //   if (vm.reverse === true) {
+  //     return direction === 'down';
+  //   }
+  //   /**
+  //    * Check if positive sorting
+  //    */
+  //   if ( vm.reverse === false) {
+  //     return direction === 'up';
+  //   }
+  // };
 }
 
 ComponentController.$inject = ['rawRunnerService', 'pagerService', 'dataTypeHelper', '$scope'];
