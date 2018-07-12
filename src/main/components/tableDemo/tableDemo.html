@@ -15,10 +15,14 @@
   <ul>
     <li ng-class="{'is-active': $ctrl.isViewActive(view)}" ng-repeat="view in $ctrl.viewsAvailable" ng-click="$ctrl.openView(view)">
       <a>
-        <span>{{ view.label }} ABC</span>
+        <span>{{ view.label }}</span>
       </a>
     </li>
   </ul>
+</div>
+
+<div class="is-fullwidth column has-text-centered" ng-hide="$ctrl.tableDataPromise.$$state.status">
+    <i class="fas fa-spinner fa-spin fa-5x"></i>
 </div>
 
 <!-- TABLE -->
@@ -26,7 +30,7 @@
 <div class="data-table">
   <div class="columns">
     <div class="column">
-      <table class="table is-striped is-bordered is-narrow">
+      <table class="table is-striped is-bordered is-narrow" ng-show="$ctrl.tableDataPromise.$$state.status">
         <thead>
           <tr>
             <th ng-repeat="columnTitle in $ctrl.tableHeaders">
