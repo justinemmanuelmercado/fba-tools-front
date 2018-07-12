@@ -9,6 +9,7 @@ import footerBar from './components/footerBar/footerBar';
 import profile from './components/profile/profile';
 import merchants from './components/merchants/merchants';
 import tableDemo from './components/tableDemo/tableDemo';
+import loginComponent from './components/loginComponent/loginComponent';
 
 /**
  * Import Services
@@ -28,6 +29,7 @@ const mainModule = angular.module('main', [])
     .component('profile', profile)
     .component('merchants', merchants)
     .component('tableDemo', tableDemo)
+    .component('loginComponent', loginComponent)
     /**
      * Inject Services
      */
