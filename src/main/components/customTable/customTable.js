@@ -5,7 +5,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
   const vm = this;
 
   // Data
-  vm.sqlQuery = 'select * from sales_last_12_months';
+  vm.sqlQuery = 'SELECT * from sales_last_12_months';
   vm.tableData = [];
   vm.tableHeaders = [];
   vm.tableHeaderFilters = {};
@@ -17,26 +17,91 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
   vm.column = '';
   vm.pager = {};
   vm.items = [];
+  vm.currentView = 'Last 12 months';
+  vm.tableDataPromise = {};
+  vm.tableOptions = {
+    sort: '',
+  };
 
   // Constants
   vm.maxLengthCell = 100;
+  /**
+   * Avaialable views: Paassign nalang kasi hindi pa gumagana local db
+   * sales, sales_last_12_months, sales_last_30_days, sales_last_7_days
+   * sales_month_to_date, sales_today, sales_week_to_date, 
+   * sales_year_to_date, sales_yesterday
+   */
+  vm.viewsAvailable = [
+    {
+      label: 'Today',
+      viewName: 'sales_today',
+    },
+    {
+      label: 'Yesterday',
+      viewName: 'sales_yesterday',
+    },
+    {
+      label: 'Last 7 days',
+      viewName: 'sales_last_7_days',
+    },
+    {
+      label: 'Week to date',
+      viewName: 'sales_week_to_date',
+    },
+    {
+      label: 'Last 30 days',
+      viewName: 'sales_last_30_days',
+    },
+    {
+      label: 'Month to date',
+      viewName: 'sales_month_to_date',
+    },
+    {
+      label: 'Last 12 months',
+      viewName: 'sales_last_12_months',
+    },
+    {
+      label: 'Year to date',
+      viewName: 'sales_year_to_date',
+    },
+  ];
 
 
   //vm.setPage = setPage; // @todo temporarily removed
-  
-  vm.change = () => console.log(vm.objectFilter);
 
   vm.loadData = () => {
-    rawRunnerService.rawQuerySelect(vm.sqlQuery).then((data) => {
+    /**
+     * @todo Make way to pass array of data, to cache data
+     * instead of always querying same query
+     */
+    vm.tableDataPromise = rawRunnerService.rawQuerySelect(vm.sqlQuery).then((data) => {
       /**
        * Set index 0 of data.data as const tableData
        * and index 1 of data.data as const rawHeaderData
        */
       const [tableData, rawHeaderData] = data.data;
 
-      const tempTableData = tableData;
+      let tempTableData = tableData;
 
+      /**
+       * @todo create new table map for headers taken from query
+       * and create new string headers that are property safe
+       * create map object
+       */
+      console.log(vm.tableHeaders);
       vm.tableHeaders = rawHeaderData.map(value => value.name);
+      vm.tableHeaders.forEach((header) => {
+        const newHeader = header.replace(/\W/g, '');
+        console.log(newHeader);
+        if (newHeader !== header) {
+          tempTableData.forEach((row) => {
+            row[newHeader] = row[header];
+            delete row[header];
+          });
+          vm.tableHeaders.push(newHeader);
+          vm.tableHeaders.splice(vm.tableHeaders.indexOf(header), 1);
+        }
+      });
 
       /**
        * Set current page to 1
@@ -47,35 +112,37 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
        *  Set default data
        */
       vm.createBlankActivesObject(vm.tableHeaders);
-      
+
+      /**
+       * @todo improve implementation, use promises to chain data building
+       * properly
+       */
       vm.createTypeMapper(tempTableData, vm.tableHeaders).then((typeMap) => {
         if (Object.values(typeMap).includes('number')) {
           const numberHeaders = [];
           for (let i = 0; i < vm.tableHeaders.length; i++) {
             const currentTableHeader = vm.tableHeaders[i];
             const currentTableHeaderType = vm.typeMap[currentTableHeader];
-            
+
             if (currentTableHeaderType !== 'number') {
               continue;
             }
-            
+
             numberHeaders.push(currentTableHeader);
           }
-          
+
           vm.tableData = tempTableData.map((row) => {
             numberHeaders.forEach((header) => {
               row[header] = numeral(row[header]).value();
             });
-            
+
             return row;
           });
-          
-          console.log(vm.tableData);
-          vm.createSelectData(vm.tableData, vm.tableHeaders);
-          vm.createDefaultObjectFilter(vm.tableHeaders);
         } else {
           vm.tableData = tempTableData;
         }
+        vm.createSelectData(vm.tableData, vm.tableHeaders);
+        vm.createDefaultObjectFilter(vm.tableHeaders);
         $scope.$digest();
       });
     });
@@ -128,15 +195,39 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
 
   // called on header click
   vm.sortColumn = (col) => {
-    vm.column = col;
-    if (vm.reverse) {
-      vm.reverse = false;
-      vm.reverseclass = 'arrow-up';
-    } else {
-      vm.reverse = true;
-      vm.reverseclass = 'arrow-down';
+    const positiveColumn = col;
+    const negativeColumn = `-${col}`;
+    /**
+     * Check if negative sorting
+     */
+    if (vm.tableOptions.sort === negativeColumn) {
+      vm.tableOptions.sort = '';
+      return;
     }
+    /**
+     * Check if positive sorting
+     */
+    if (vm.tableOptions.sort === positiveColumn) {
+      vm.tableOptions.sort = negativeColumn;
+      return;
+    }
+
+    /**
+     * Check if not sorted with current column
+     */
+    vm.tableOptions.sort = positiveColumn;
   };
+
+  // vm.sortColumn = (col) => {
+  //   vm.column = col;
+  //   if (vm.reverse) {
+  //     vm.reverse = false;
+  //     vm.reverseclass = 'arrow-up';
+  //   } else {
+  //     vm.reverse = true;
+  //     vm.reverseclass = 'arrow-down';
+  //   }
+  // }
 
   // remove and change class
   vm.sortClass = (col) => {
@@ -183,12 +274,10 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
       const currentHeader = vm.tableHeaders[i];
       const itemValue = item[currentHeader];
       const filterValueArray = vm.objectFilter[currentHeader];
-
       if (!filterValueArray.includes(itemValue)) {
         return false;
       }
     }
-    console.log(item);
     return true;
   };
 
@@ -210,15 +299,66 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
       resolve(vm.typeMap);
     });
   };
+
+  vm.isViewActive = view => view.label === vm.currentView;
+
+  vm.openView = (view) => {
+    vm.currentView = view.label;
+    vm.sqlQuery = `SELECT * FROM ${view.viewName}`;
+    vm.loadData();
+  };
+
+  vm.getSortStatus = (columnTitle, direction) => {
+    const positiveColumn = columnTitle;
+    const negativeColumn = `-${columnTitle}`;
+
+    /**
+     * Check if negative sorting
+     */
+    if (vm.tableOptions.sort === negativeColumn) {
+      return direction === 'down';
+    }
+    /**
+     * Check if positive sorting
+     */
+    if (vm.tableOptions.sort === positiveColumn) {
+      return direction === 'up';
+    }
+
+    /**
+     * Check if not sorted with current column
+     */
+    return direction === 'minus';
+  };
+  // vm.getSortStatus = (columnTitle, direction) => {
+  //   console.log(columnTitle, vm.column);
+  //   /**
+  //    * Check if not sorted with current column
+  //    */
+  //   if(columnTitle !== vm.column){
+  //     return direction === 'minus';
+  //   }
+
+  //   /**
+  //    * Check if negative sorting
+  //    */
+  //   if (vm.reverse === true) {
+  //     return direction === 'down';
+  //   }
+  //   /**
+  //    * Check if positive sorting
+  //    */
+  //   if ( vm.reverse === false) {
+  //     return direction === 'up';
+  //   }
+  // };
 }
 
 ComponentController.$inject = ['rawRunnerService', 'pagerService', 'dataTypeHelper', '$scope'];
 
 export default {
-  template: require('./customTable.html'),
+  template: require('./tableDemo.html'),
   controllerAs: '$ctrl',
   controller: ComponentController,
-  bindings: {
-    query: '=',
-  },
 };
+

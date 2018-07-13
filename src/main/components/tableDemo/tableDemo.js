@@ -81,7 +81,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
        */
 
       const [tableData, rawHeaderData] = angular.copy(data.data);
-      console.log(data.data);
+
       let tempTableData = tableData;
 
       /**
@@ -297,6 +297,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
       }
 
       resolve(vm.typeMap);
+      console.log(vm.typeMap);
     });
   };
 

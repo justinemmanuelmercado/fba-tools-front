@@ -1,15 +1,28 @@
-<!-- TABLE -->
 <div class="data-table">
   <div class="columns">
     <div class="column">
-      <table class="table is-striped is-bordered">
+      <table class="table is-striped is-bordered is-narrow" ng-show="$ctrl.tableDataPromise.$$state.status">
         <thead>
           <tr>
             <th ng-repeat="columnTitle in $ctrl.tableHeaders">
               <div class="columns table-header-container">
                 <div class="column table-header">
                   <div>
-                    <span ng-click='$ctrl.sortColumn(columnTitle)' ng-class='$ctrl.sortClass(columnTitle)'>{{ columnTitle }}
+                    <span ng-if="$ctrl.typeMap[columnTitle] === 'image'">{{ columnTitle }}
+                    </span>
+                    <span ng-if="$ctrl.typeMap[columnTitle] !== 'image'" ng-click='$ctrl.sortColumn(columnTitle)'>
+
+                      <!-- @todo FIX DIRTY IMPLEMENTATION BELOW -->
+                      <span ng-show="$ctrl.getSortStatus(columnTitle, 'down')">
+                        <i class="fas fa-sort-down" aria-hidden="true"></i>
+                      </span>
+                      <span ng-show="$ctrl.getSortStatus(columnTitle, 'up')">
+                        <i class="fas fa-sort-up" aria-hidden="true"></i>
+                      </span>
+                      <span ng-show="$ctrl.getSortStatus(columnTitle, 'minus')">
+                        <i class="fas fa-sort" aria-hidden="true"></i>
+                      </span>
+                      {{ columnTitle }}
                     </span>
                   </div>
                   <div ng-if="$ctrl.typeMap[columnTitle] !== 'image'" class="dropdown" ng-class="{ 'is-active': $ctrl.activeTables[columnTitle] }">
@@ -38,8 +51,8 @@
             </th>
           </tr>
         </thead>
-        <tbody>
-          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.multipleSelectFilter | orderBy: $ctrl.column : $ctrl.reverse ">
+        <tbody>'
+          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.multipleSelectFilter | orderBy: $ctrl.tableOptions.sort">
             <td ng-repeat="columnTitle in $ctrl.tableHeaders">
               <span ng-if="$ctrl.typeMap[columnTitle] === 'string'">
                 {{ data[columnTitle] | limitTo: $ctrl.maxLengthCell }}{{ data[columnTitle].length > $ctrl.maxLengthCell ? '...' : '' }}

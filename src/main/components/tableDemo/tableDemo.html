@@ -89,6 +89,9 @@
               <span ng-if="$ctrl.typeMap[columnTitle] === 'number'">
                 {{ data[columnTitle] | number }}
               </span>
+              <span ng-if="$ctrl.typeMap[columnTitle] === 'date'">
+                {{ data[columnTitle] }}
+              </span>
               <img ng-src="{{ data[columnTitle] }}" alt="data[columnTitle]" ng-if="$ctrl.typeMap[columnTitle] === 'image'">
             </td>
           </tr>
