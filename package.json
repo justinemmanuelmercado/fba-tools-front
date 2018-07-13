@@ -23,6 +23,8 @@
     "angular": "^1.6.10",
     "bulma": "^0.7.1",
     "connect": "^3.6.6",
+    "empty-module": "0.0.2",
+    "moment": "^2.22.2",
     "numeral": "^2.0.6",
     "serve-static": "^1.13.2"
   },

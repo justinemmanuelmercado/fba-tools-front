@@ -18,7 +18,7 @@ const router = ($stateProvider, $locationProvider, $urlRouterProvider) => {
         },
         {
             name: 'login-component',
-            url: 'login-component',
+            url: 'login',
             template: '<login-component></login-component>'
         },
     ];

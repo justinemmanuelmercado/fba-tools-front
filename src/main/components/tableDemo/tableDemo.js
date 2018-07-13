@@ -79,8 +79,9 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
        * Set index 0 of data.data as const tableData
        * and index 1 of data.data as const rawHeaderData
        */
-      const [tableData, rawHeaderData] = data.data;
 
+      const [tableData, rawHeaderData] = angular.copy(data.data);
+      console.log(data.data);
       let tempTableData = tableData;
 
       /**
@@ -88,12 +89,10 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
        * and create new string headers that are property safe
        * create map object
        */
-      console.log(vm.tableHeaders);
       vm.tableHeaders = rawHeaderData.map(value => value.name);
       vm.tableHeaders.forEach(header => {
         
         let newHeader = header.replace(/\W/g, '');
-        console.log(newHeader);
         if(newHeader !== header){  
           tempTableData.forEach((row, index) => {
             row[newHeader] = row[header];

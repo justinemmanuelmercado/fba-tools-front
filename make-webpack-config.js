@@ -193,6 +193,7 @@ module.exports = function makeWebpackConfig(options) {
   };
 
   plugins.push(new webpack.DefinePlugin(definitions));
+  plugins.push(new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/));
 
   let jsRules;
 

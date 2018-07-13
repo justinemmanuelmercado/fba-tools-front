@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const service = function helperService() {
     /**
      * Checks if string is a number (only, 0-9, commas or decimal points or dash for negative)
@@ -15,6 +17,12 @@ const service = function helperService() {
      * https://stackoverflow.com/a/15734347
      */
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+
+    
+    const isDate = (data) => {
+        const dateToTest = moment.default(data);
+        return dateToTest.isValid();
+    }
 
     const isImageFile = (data) => {
         /**
@@ -37,6 +45,10 @@ const service = function helperService() {
     const identifyDataType = (data) => {
         if (!data && data !== 0) {
             return false;
+        }
+
+        if(isDate(data)){
+            return 'date';
         }
 
         if (isImageFile(data)) {
