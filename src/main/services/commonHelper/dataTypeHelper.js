@@ -2,9 +2,9 @@ const moment = require('moment');
 
 const service = function helperService() {
     /**
-     * Checks if string is a number (only, 0-9, commas or decimal points or dash for negative)
+     * https://stackoverflow.com/a/13686347
      */
-    const numberRegex = /^[0-9,.-]*$/;
+    const numberRegex = /^[-+]?[0-9,]*[.,]?[0-9]+$/;
 
     /**
      * Checks if string ends with valid image extensions
@@ -18,7 +18,7 @@ const service = function helperService() {
      */
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
 
-    
+
     const isDate = (data) => {
         const dateToTest = moment.default(data);
         return dateToTest.isValid();
@@ -47,9 +47,6 @@ const service = function helperService() {
             return false;
         }
 
-        if(isDate(data)){
-            return 'date';
-        }
 
         if (isImageFile(data)) {
             return 'image';
@@ -61,6 +58,10 @@ const service = function helperService() {
 
         if (isNumber(data)) {
             return 'number';
+        }
+
+        if (isDate(data)) {
+            return 'date';
         }
 
         return 'string';

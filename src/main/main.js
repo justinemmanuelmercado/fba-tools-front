@@ -6,10 +6,9 @@ import angular from 'angular';
 import rootComponent from './components/rootComponent/rootComponent';
 import navigationBar from './components/navigationBar/navigationBar';
 import footerBar from './components/footerBar/footerBar';
-import profile from './components/profile/profile';
-import merchants from './components/merchants/merchants';
 import tableDemo from './components/tableDemo/tableDemo';
 import loginComponent from './components/loginComponent/loginComponent';
+import sales from './components/sales/sales';
 
 /**
  * Import Services
@@ -18,6 +17,7 @@ import rawRunnerService from './services/rawRunner';
 import requestsHelper from './services/serviceHelper/requestsHelper';
 import pagerService from './services/pagerService';
 import dataTypeHelper from './services/commonHelper/dataTypeHelper';
+import constantsService from './services/constantsService';
 
 const mainModule = angular.module('main', [])
     /**
@@ -26,16 +26,16 @@ const mainModule = angular.module('main', [])
     .component('rootComponent', rootComponent)
     .component('navigationBar', navigationBar)
     .component('footerBar', footerBar)
-    .component('profile', profile)
-    .component('merchants', merchants)
     .component('tableDemo', tableDemo)
     .component('loginComponent', loginComponent)
+    .component('sales', sales)
     /**
      * Inject Services
      */
     .factory('pagerService', pagerService)
     .factory('requestsHelper', requestsHelper)
     .factory('rawRunnerService', rawRunnerService)
-    .factory('dataTypeHelper', dataTypeHelper);
+    .factory('dataTypeHelper', dataTypeHelper)
+    .factory('constantsService', constantsService);
 
 export default mainModule.name;

@@ -21,6 +21,11 @@ const router = ($stateProvider, $locationProvider, $urlRouterProvider) => {
             url: 'login',
             template: '<login-component></login-component>'
         },
+        {
+            name: 'sales',
+            url: 'sales',
+            template: '<sales></sales>',
+        },
     ];
 
     $locationProvider.hashPrefix('');

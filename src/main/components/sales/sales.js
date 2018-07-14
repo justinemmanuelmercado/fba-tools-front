@@ -1,11 +1,10 @@
 import numeral from 'numeral';
-import './tableDemo.css';
+import './sales.css';
 
 function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $scope, constantsService) {
   const vm = this;
 
   // Data
-  vm.sqlQuery = 'SELECT * from sales_last_12_months';
   vm.tableData = [];
   vm.tableHeaders = [];
   vm.tableHeadersLabel = {};
@@ -19,6 +18,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
   vm.pager = {};
   vm.items = [];
   vm.currentView = 'Last 12 months';
+  vm.viewName = 'sales_last_12_months';
   vm.tableDataPromise = {};
   vm.tableOptions = {
     sort: '',
@@ -35,20 +35,22 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
      * @todo Make way to pass array of data, to cache data
      * instead of always querying same query
      */
-    vm.tableDataPromise = rawRunnerService.rawQuerySelect(vm.sqlQuery).then((data) => {
+    vm.tableDataPromise = rawRunnerService.requestView(vm.viewName).then((data) => {
       /**
        * Set index 0 of data.data as const tableData
        * and index 1 of data.data as const rawHeaderData
        */
       const [tableData, rawHeaderData] = data.data;
       const tempTableData = tableData;
+
+      vm.resetData();
+
       /**
        * @todo create new table map for headers taken from query
        * and create new string headers that are property safe
        * create map object
        */
       const tempHeaderData = rawHeaderData.map(value => value.name);
-
       tempHeaderData.forEach((header) => {
         const newHeader = header.replace(/\W/g, '');
         if (newHeader !== header) {
@@ -251,7 +253,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
 
   vm.openView = (view) => {
     vm.currentView = view.label;
-    vm.sqlQuery = `SELECT * FROM ${view.viewName}`;
+    vm.sqlView = view.viewName;
     vm.loadData();
   };
 
@@ -277,13 +279,30 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
      */
     return direction === 'minus';
   };
+
+  vm.resetData = () => {
+    vm.tableData = [];
+    vm.tableHeaders = [];
+    vm.tableHeadersLabel = {};
+    vm.tableHeaderFilters = {};
+    vm.objectFilter = {};
+    vm.activeTables = {};
+    vm.headerAllOption = {};
+    vm.typeMap = {};
+    vm.reverse = false;
+    vm.column = '';
+    vm.pager = {};
+    vm.items = [];
+    vm.tableOptions = {
+      sort: '',
+    };
+  };
 }
 
 ComponentController.$inject = ['rawRunnerService', 'pagerService', 'dataTypeHelper', '$scope', 'constantsService'];
 
 export default {
-  template: require('./tableDemo.html'),
+  template: require('./sales.html'),
   controllerAs: '$ctrl',
   controller: ComponentController,
 };
-

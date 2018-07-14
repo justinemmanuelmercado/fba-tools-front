@@ -1,16 +1,15 @@
-const service = function helperService($http) {
-    const API_HOME = 'http://18.232.244.33:3000/api/';
-    // const API_HOME = 'http://localhost:3000/api/';
+const service = function helperService($http, constantsService) {
+    const { API_HOME } = constantsService;
 
     const post = (url, requestBody) => $http.post(`${API_HOME}${url}`, requestBody);
     const get = url => $http.get(`${API_HOME}${url}`);
-    
+
     return {
         post,
         get,
     };
 };
 
-service.$inject = ['$http'];
+service.$inject = ['$http', 'constantsService'];
 
 module.exports = service;
