@@ -10,6 +10,10 @@ function ComponentController($scope) {
         //login logic here
     }
 
+    vm.register = () => {
+        //register logic here
+    }
+
 }
 
 ComponentController.$inject = ['$scope'];
