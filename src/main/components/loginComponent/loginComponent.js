@@ -1,11 +1,15 @@
 import './loginComponent.css';
-
 function ComponentController($scope) {
     const vm = this;
 
     $scope.massage = 'Hello';
-    console.log("YES!");
     vm.message = 'World';
+    $scope.isLogin = true;
+
+    vm.login = () => {
+        //login logic here
+    }
+
 }
 
 ComponentController.$inject = ['$scope'];
