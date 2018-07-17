@@ -125,6 +125,10 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
     });
   };
 
+  /**
+   * For flagging active filters
+   * @param {*} tableHeaders 
+   */
   vm.createBlankActivesObject = (tableHeaders) => {
     vm.activeTables = {};
     tableHeaders.forEach((header) => {
@@ -235,6 +239,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
       for (let i = 0; i < tableHeaders.length; i++) {
         const currentHeader = tableHeaders[i];
         let testRowIndex = 0;
+        console.log(tableData);
         let testData = tableData[testRowIndex][currentHeader];
 
         while (!testData && testData !== 0) {
