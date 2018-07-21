@@ -42,7 +42,7 @@ const service = function service() {
     },
   ];
 
-  //const API_HOME = 'http://18.232.244.33:3443/api/';
+  //const API_HOME = 'https://18.232.244.33:3443/api/';
   const API_HOME = 'http://localhost:3000/api/';
   //const API_HOME = 'https://localhost:3443/api/';
 

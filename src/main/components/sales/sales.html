@@ -1,95 +1,96 @@
 <div class="tabs is-fullwidth is-toggle is-small">
-    <ul>
-      <li ng-class="{'is-active': $ctrl.isViewActive(view)}" ng-repeat="view in $ctrl.viewsAvailable" ng-click="$ctrl.openView(view)">
-        <a>
-          <span>{{ view.label }}</span>
-        </a>
-      </li>
-    </ul>
-  </div>
-  
-  <div class="is-fullwidth column has-text-centered" ng-hide="$ctrl.tableDataPromise.$$state.status">
-      <i class="fas fa-spinner fa-spin fa-5x"></i>
-  </div>
-  
-  <!-- TABLE -->
-  <!-- @todo SEPARATE TABLE COMPONENT SOMEHOW -->
-  <div class="data-table">
-    <div class="columns">
-      <div class="column">
-        <table class="table is-striped is-bordered is-narrow" ng-show="$ctrl.tableDataPromise.$$state.status">
-          <thead>
-            <tr>
-              <th ng-repeat="columnTitle in $ctrl.tableHeaders">
-                <div class="columns table-header-container">
-                  <div class="column table-header">
-                    <div>
-                      <span ng-if="$ctrl.typeMap[columnTitle] === 'image'">{{ columnTitle }}
+  <ul>
+    <li ng-class="{'is-active': $ctrl.isViewActive(view)}" ng-repeat="view in $ctrl.viewsAvailable" ng-click="$ctrl.openView(view)">
+      <a>
+        <span>{{ view.label }}</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="is-fullwidth column has-text-centered" ng-hide="$ctrl.tableDataPromise.$$state.status">
+  <i class="fas fa-spinner fa-spin fa-5x"></i>
+</div>
+
+<!-- TABLE -->
+<!-- @todo SEPARATE TABLE COMPONENT SOMEHOW -->
+<div class="data-table">
+  <div class="columns">
+    <div class="column">
+      <table class="table is-striped is-bordered is-narrow" ng-show="$ctrl.tableDataPromise.$$state.status">
+        <thead>
+          <tr>
+            <th ng-repeat="columnTitle in $ctrl.tableHeaders">
+              <div class="columns table-header-container">
+                <div class="column table-header level">
+                  <section class="level-item">
+                    <span ng-if="$ctrl.typeMap[columnTitle] === 'image'">{{ columnTitle }}
+                    </span>
+                    <span ng-click='$ctrl.sortColumn(columnTitle)' ng-if="$ctrl.typeMap[columnTitle] !== 'image'">
+
+                      <!-- @todo FIX DIRTY IMPLEMENTATION BELOW -->
+                      <span ng-show="$ctrl.getSortStatus(columnTitle, 'down')">
+                        <i class="fas fa-sort-down" aria-hidden="true"></i>
                       </span>
-                      <span ng-click='$ctrl.sortColumn(columnTitle)' ng-if="$ctrl.typeMap[columnTitle] !== 'image'">
-  
-                        <!-- @todo FIX DIRTY IMPLEMENTATION BELOW -->
-                        <span ng-show="$ctrl.getSortStatus(columnTitle, 'down')">
-                          <i class="fas fa-sort-down" aria-hidden="true"></i>
-                        </span>
-                        <span ng-show="$ctrl.getSortStatus(columnTitle, 'up')">
-                          <i class="fas fa-sort-up" aria-hidden="true"></i>
-                        </span>
-                        <span ng-show="$ctrl.getSortStatus(columnTitle, 'minus')">
-                          <i class="fas fa-sort" aria-hidden="true"></i>
-                        </span>
-                        {{ $ctrl.tableHeadersLabel[columnTitle] }}
+                      <span ng-show="$ctrl.getSortStatus(columnTitle, 'up')">
+                        <i class="fas fa-sort-up" aria-hidden="true"></i>
                       </span>
-                    </div>
-                    <div ng-if="$ctrl.typeMap[columnTitle] !== 'image'" class="dropdown" ng-class="{ 'is-active': $ctrl.activeTables[columnTitle] }">
-                      <div class="dropdown-trigger">
-                        <button class="button" aria-haspopup="true" ng-click="$ctrl.activeTables[columnTitle] = !$ctrl.activeTables[columnTitle]"
-                          aria-controls="dropdown-menu">
-                          <span class="icon is-small">
-                            <i class="fas fa-angle-down" aria-hidden="true"></i>
-                          </span>
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                          <div class="dropdown-content filter-dropdown">
-                            <label class="checkbox dropdown-item" ng-class="{'has-text-grey-lighter': $ctrl.objectFilter[columnTitle].length !== $ctrl.tableHeaderFilters[columnTitle].length}">
-                              <input type="checkbox" ng-checked="$ctrl.objectFilter[columnTitle].length === $ctrl.tableHeaderFilters[columnTitle].length"
-                                ng-click="$ctrl.toggleAllSelection(columnTitle)"> All
-                            </label>
-                            <label class="checkbox dropdown-item" ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]">
-                              <input type="checkbox" ng-checked="$ctrl.inSelection(option, columnTitle)" ng-click="$ctrl.toggleSelection(option, columnTitle)"> {{ option }}
-                            </label>
-                          </div>
+                      <span ng-show="$ctrl.getSortStatus(columnTitle, 'minus')">
+                        <i class="fas fa-sort" aria-hidden="true"></i>
+                      </span>
+                      {{ $ctrl.tableHeadersLabel[columnTitle] }}
+                    </span>
+                  </section>
+                  <div ng-if="$ctrl.typeMap[columnTitle] !== 'image'" class="dropdown level-item" ng-class="{ 'is-active': $ctrl.activeTables[columnTitle] }">
+                    <div class="dropdown-trigger">
+                      <button class="button level-item" aria-haspopup="true" ng-click="$ctrl.activeTables[columnTitle] = !$ctrl.activeTables[columnTitle]"
+                        aria-controls="dropdown-menu">
+                        <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                      <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div class="dropdown-content filter-dropdown">
+                          <label class="checkbox dropdown-item" ng-class="{'has-text-grey-lighter': $ctrl.objectFilter[columnTitle].length !== $ctrl.tableHeaderFilters[columnTitle].length}">
+                            <input type="checkbox" ng-checked="$ctrl.objectFilter[columnTitle].length === $ctrl.tableHeaderFilters[columnTitle].length"
+                              ng-click="$ctrl.toggleAllSelection(columnTitle)"> All
+                          </label>
+                          <label class="checkbox dropdown-item" ng-repeat="option in $ctrl.tableHeaderFilters[columnTitle]">
+                            <input type="checkbox" ng-checked="$ctrl.inSelection(option, columnTitle)" ng-click="$ctrl.toggleSelection(option, columnTitle)"> {{ option }}
+                          </label>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <!-- dropdown end -->
                 </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.multipleSelectFilter | orderBy: $ctrl.tableOptions.sort">
-              <td ng-repeat="columnTitle in $ctrl.tableHeaders">
-                <span class="line-break" ng-if="$ctrl.typeMap[columnTitle] === 'string'">
-                  {{ data[columnTitle] | limitTo: $ctrl.maxLengthCell }}{{ data[columnTitle].length > $ctrl.maxLengthCell ? '...' : '' }}
-                  
-                </span>
-                <span class="line-break" ng-if="$ctrl.typeMap[columnTitle] === 'number'">
-                  {{ data[columnTitle] | number }}
-                </span>
-                <span class="line-break" ng-if="$ctrl.typeMap[columnTitle] === 'date'">
-                  {{ data[columnTitle] }}
-                </span>
-                <img ng-src="{{ data[columnTitle] }}" alt="{{data[columnTitle]}}" ng-if="$ctrl.typeMap[columnTitle] === 'image'">
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.multipleSelectFilter | orderBy: $ctrl.tableOptions.sort">
+            <td ng-repeat="columnTitle in $ctrl.tableHeaders">
+              <span class="line-break" ng-if="$ctrl.typeMap[columnTitle] === 'string'">
+                {{ data[columnTitle] | limitTo: $ctrl.maxLengthCell }}{{ data[columnTitle].length > $ctrl.maxLengthCell ? '...' : '' }}
+
+              </span>
+              <span class="line-break" ng-if="$ctrl.typeMap[columnTitle] === 'number'">
+                {{ data[columnTitle] | number }}
+              </span>
+              <span class="line-break" ng-if="$ctrl.typeMap[columnTitle] === 'date'">
+                {{ data[columnTitle] }}
+              </span>
+              <img ng-src="{{ data[columnTitle] }}" alt="{{data[columnTitle]}}" ng-if="$ctrl.typeMap[columnTitle] === 'image'">
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  
-  <!-- SAMPLE TABLE WITH PAGINATION
+</div>
+
+<!-- SAMPLE TABLE WITH PAGINATION
   <br><br>
   
   <div class="data-table">

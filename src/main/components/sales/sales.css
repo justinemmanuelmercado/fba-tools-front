@@ -10,6 +10,11 @@ sales .data-table {
 
 sales th {
   min-width: 200px;
+  min-height: 80px;
+}
+
+sales thead {
+  line-height: 50px;
 }
 
 sales .filter-dropdown {
@@ -29,6 +34,7 @@ sales .table-header {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  width: max-content;
 }
 
 sales .table-header>div {

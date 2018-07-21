@@ -1,5 +1,6 @@
 function ComponentController() {
     const vm = this;
+    vm.policy_url = 'http://localhost:2992/#/privacy-policy';
 }
 
 ComponentController.$inject = [];

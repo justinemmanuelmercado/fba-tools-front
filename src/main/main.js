@@ -9,6 +9,7 @@ import footerBar from './components/footerBar/footerBar';
 import tableDemo from './components/tableDemo/tableDemo';
 import loginComponent from './components/loginComponent/loginComponent';
 import sales from './components/sales/sales';
+import privacyPolicy from './components/privacyPolicy/privacyPolicy'
 
 /**
  * Import Services
@@ -29,6 +30,7 @@ const mainModule = angular.module('main', [])
     .component('tableDemo', tableDemo)
     .component('loginComponent', loginComponent)
     .component('sales', sales)
+    .component('privacyPolicy', privacyPolicy)
     /**
      * Inject Services
      */
