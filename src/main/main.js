@@ -19,6 +19,7 @@ import requestsHelper from './services/serviceHelper/requestsHelper';
 import pagerService from './services/pagerService';
 import dataTypeHelper from './services/commonHelper/dataTypeHelper';
 import constantsService from './services/constantsService';
+import authenticationService from './services/authenticationService';
 
 const mainModule = angular.module('main', [])
     /**
@@ -38,6 +39,7 @@ const mainModule = angular.module('main', [])
     .factory('requestsHelper', requestsHelper)
     .factory('rawRunnerService', rawRunnerService)
     .factory('dataTypeHelper', dataTypeHelper)
+    .factory('authenticationService', authenticationService)
     .factory('constantsService', constantsService);
 
 export default mainModule.name;

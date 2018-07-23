@@ -1,6 +1,8 @@
 import numeral from 'numeral';
 import './sales.css';
 
+ComponentController.$inject = ['rawRunnerService', 'pagerService', 'dataTypeHelper', '$scope', 'constantsService'];
+
 function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $scope, constantsService) {
   const vm = this;
 
@@ -100,7 +102,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
         } else {
           vm.tableData = tempTableData;
         }
-        console.log(vm.typeMap);
+        //console.log(vm.typeMap);
         vm.createSelectData(vm.tableData, vm.tableHeaders);
         vm.createDefaultObjectFilter(vm.tableHeaders);
         $scope.$digest();
@@ -239,7 +241,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
       for (let i = 0; i < tableHeaders.length; i++) {
         const currentHeader = tableHeaders[i];
         let testRowIndex = 0;
-        console.log(tableData);
+        //console.log(tableData);
         let testData = tableData[testRowIndex][currentHeader];
 
         while (!testData && testData !== 0) {
@@ -303,8 +305,6 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
     };
   };
 }
-
-ComponentController.$inject = ['rawRunnerService', 'pagerService', 'dataTypeHelper', '$scope', 'constantsService'];
 
 export default {
   template: require('./sales.html'),

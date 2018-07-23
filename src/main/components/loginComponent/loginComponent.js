@@ -1,22 +1,53 @@
 import './loginComponent.css';
-function ComponentController($scope) {
+
+ComponentController.$inject = ['$scope', 'authenticationService'];
+
+function ComponentController($scope, authenticationService) {
     const vm = this;
 
-    $scope.massage = 'Hello';
-    vm.message = 'World';
+    vm.loginPromise = {};
+    vm.credentials = {};
     $scope.isLogin = true;
 
-    vm.login = () => {
-        //login logic here
+    vm.$onInit = function activate() {
+
+    };
+
+    /**
+     * @todo LOGIC FOR LOGIN AND REGISTER
+     */
+    vm.login = (form) => {
+        
+        var creds = {
+            email : vm.credentials.email,
+            password : vm.credentials.password
+        };
+
+        //if form is valid 
+        if (form.$valid) {
+            //login logic here
+            authenticationService.login(creds)
+            .then((result) => {
+                if (result.data) {
+                    
+                }
+                //console.log(result);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
     }
 
     vm.register = () => {
         //register logic here
     }
 
-}
+    vm.clearForm = () => {
 
-ComponentController.$inject = ['$scope'];
+    }
+
+}
 
 export default {
     template: require('./loginComponent.html'),

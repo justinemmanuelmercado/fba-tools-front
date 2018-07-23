@@ -12,17 +12,18 @@
                         <form name="loginForm" ng-show="isLogin">
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-large" type="email" placeholder="Your Email" autofocus="">
+                                    <input name="email" ng-model="$ctrl.credentials.email" class="input is-large" 
+                                            type="email" placeholder="Your Email" autofocus="" required>
                                 </div>
                             </div>
 
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-large" type="password" placeholder="Your Password">
+                                    <input name="password" ng-model="$ctrl.credentials.password" class="input is-large" 
+                                        type="password" placeholder="Your Password" required>
                                 </div>
                             </div>
-                            
-                            <button class="button is-block is-info is-large is-fullwidth" ng-click="$ctrl.login()">Login</button>
+                            <button class="button is-block is-info is-large is-fullwidth" ng-click="$ctrl.login(loginForm)">Login</button>
                         </form>
 
                         <form name="registerForm" ng-hide="isLogin">
