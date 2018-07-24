@@ -1,61 +1,66 @@
 <section class="hero is-success is-fullheight">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <div class="column is-4 is-offset-4">
-                    <h3 class="title has-text-grey">FBA Tools</h3>
-                    <p class="subtitle has-text-grey">Please login to proceed.</p>
-                    <div id="loginSection" class="box">
-                        <figure class="avatar">
-                            <!-- <img src="https://placehold.it/128x128"> -->
-                            <img src="../../../../public/_assets/app_icons/fba_logo.png">
-                        </figure>
-                        <form name="loginForm" ng-show="isLogin">
-                            <div class="field">
-                                <div class="control">
-                                    <input name="email" ng-model="$ctrl.credentials.email" class="input is-large" 
-                                            type="email" placeholder="Your Email" autofocus="" required>
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-4 is-offset-4">
+                <h3 class="title has-text-grey">FBA Tools</h3>
+                <p class="subtitle has-text-grey">Please login to proceed.</p>
+                <div id="loginSection" class="box">
+                    <figure class="avatar">
+                        <!-- <img src="https://placehold.it/128x128"> -->
+                        <img src="../../../../public/_assets/app_icons/fba_logo.png">
+                    </figure>
+                    <form name="loginForm" ng-show="isLogin">
+                        <div class="field">
+                            <div class="control">
+                                <input name="email" ng-model="$ctrl.credentials.email" class="input is-large" type="email" placeholder="Your Email" autofocus=""
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <input name="password" ng-model="$ctrl.credentials.password" class="input is-large" type="password" placeholder="Your Password"
+                                    required>
+                            </div>
+                        </div>
+                        <button class="button is-block is-info is-large is-fullwidth" ng-click="$ctrl.login(loginForm)">Login</button>
+                    </form>
+
+                    <form name="registerForm" ng-hide="isLogin">
+                        <div class="field">
+                            <div class="control">
+                                <input name="registerEmail" class="input is-large" ng-model="$ctrl.registerDetails.email" type="email" placeholder="Your Email" autofocus="" required>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <input name="registerPassword" class="input is-large" ng-model="$ctrl.registerDetails.password" type="password" placeholder="Your Password" required>
+                            </div>
+                        </div>
+                        
+                        <div class="field">
+                            <div class="control">
+                                <div class="select is-large is-fullwidth" ng-class="{ 'is-loading' : !$ctrl.merchantDropdownList.length }">
+                                    <select ng-model="$ctrl.registerDetails.merchant">
+                                        <option value="" selected disabled>Select a Merchant</option>
+                                        <option value="{{merchant.id}}" ng-repeat="merchant in $ctrl.merchantDropdownList">{{merchant.merchantName}}</option>
+                                    </select>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="field">
-                                <div class="control">
-                                    <input name="password" ng-model="$ctrl.credentials.password" class="input is-large" 
-                                        type="password" placeholder="Your Password" required>
-                                </div>
-                            </div>
-                            <button class="button is-block is-info is-large is-fullwidth" ng-click="$ctrl.login(loginForm)">Login</button>
-                        </form>
+                        <button class="button is-block is-primary is-large is-fullwidth" ng-click="$ctrl.register(registerForm)">Register</button>
+                    </form>
 
-                        <form name="registerForm" ng-hide="isLogin">
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input is-large" type="email" placeholder="Your Email" autofocus="">
-                                </div>
-                            </div>
-
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input is-large" type="password" placeholder="Your Password">
-                                </div>
-                            </div>
-
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input is-large" type="text" placeholder="Merchant ID">
-                                </div>
-                            </div>
-                            
-                            <button class="button is-block is-primary is-large is-fullwidth" ng-click="$ctrl.register()">Register</button>
-                        </form>
-
-                    </div>
-
-                    <p class="has-text-grey">
-                        <a ng-click="isLogin = !isLogin">{{isLogin ? 'Sign Up' : 'Sign In'}}</a> &nbsp;·&nbsp;
-                        <a href="../">Forgot Password</a> &nbsp;·&nbsp;
-                        <a href="../">Need Help?</a>
-                    </p>
                 </div>
+
+                <p class="has-text-grey">
+                    <a ng-click="isLogin = !isLogin">{{isLogin ? 'Sign Up' : 'Sign In'}}</a> &nbsp;·&nbsp;
+                    <a href="../">Forgot Password</a> &nbsp;·&nbsp;
+                    <a href="../">Need Help?</a>
+                </p>
             </div>
         </div>
-    </section>
+    </div>
+</section>

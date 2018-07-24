@@ -20,6 +20,8 @@ import pagerService from './services/pagerService';
 import dataTypeHelper from './services/commonHelper/dataTypeHelper';
 import constantsService from './services/constantsService';
 import authenticationService from './services/authenticationService';
+import navigationService from './services/navigationService';
+import merchantService from './services/merchantService';
 
 const mainModule = angular.module('main', [])
     /**
@@ -40,6 +42,8 @@ const mainModule = angular.module('main', [])
     .factory('rawRunnerService', rawRunnerService)
     .factory('dataTypeHelper', dataTypeHelper)
     .factory('authenticationService', authenticationService)
-    .factory('constantsService', constantsService);
+    .factory('constantsService', constantsService)
+    .factory('navigationService', navigationService)
+    .factory('merchantService', merchantService);
 
 export default mainModule.name;
