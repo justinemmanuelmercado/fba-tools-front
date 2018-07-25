@@ -15,6 +15,7 @@ function ComponentController($scope, authenticationService, navigate, merchantSe
     $scope.isLogin = true;
 
     vm.$onInit = function activate() {
+        vm.activateAmazon();
         vm.getDropdownMerchantList();
     };
 
@@ -71,17 +72,36 @@ function ComponentController($scope, authenticationService, navigate, merchantSe
     vm.getDropdownMerchantList = () => {
 
         vm.merchantDropdownPromise = merchantService.getMerchants()
-        .then((result) => {
-            vm.merchantDropdownList = result.data;
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+            .then((result) => {
+                vm.merchantDropdownList = result.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     vm.clearForm = () => {
 
-    }
+    };
+
+    vm.activateAmazon = () => {
+        document.getElementById('LoginWithAmazon').onclick = function () {
+            let options = { scope: 'profile' };
+            amazon.Login.authorize(options,
+                'http://localhost:2992');
+            return false;
+        };
+
+        window.onAmazonLoginReady = function () {
+            amazon.Login.setClientId('amzn1.application-oa2-client.da5763eff90341b69303a354628e534a');
+        };
+        (function (d) {
+            var a = d.createElement('script'); a.type = 'text/javascript';
+            a.async = true; a.id = 'amazon-login-sdk';
+            a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+            d.getElementById('amazon-root').appendChild(a);
+        })(document);
+    };
 
 }
 
