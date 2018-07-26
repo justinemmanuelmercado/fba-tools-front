@@ -49,7 +49,7 @@ function ComponentController($scope, authenticationService, navigate, merchantSe
         var register_details = {
             email: vm.registerDetails.email,
             password: vm.registerDetails.password,
-            merchant: vm.registerDetails.merchant
+            merchantId: vm.registerDetails.merchant
         };
 
 

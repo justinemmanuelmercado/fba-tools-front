@@ -20,7 +20,7 @@
       <table class="table is-striped is-bordered is-narrow" ng-show="$ctrl.tableDataPromise.$$state.status">
         <thead>
           <tr>
-            <th ng-repeat="columnTitle in $ctrl.tableHeaders">
+            <th ng-repeat="columnTitle in $ctrl.tableHeaders" ng-if="columnTitle != 'merchantIDID'">
               <div class="columns table-header-container">
                 <div class="column table-header level">
                   <section class="level-item">
@@ -70,7 +70,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="data in $ctrl.tableData | filter: $ctrl.multipleSelectFilter | orderBy: $ctrl.tableOptions.sort">
-            <td ng-repeat="columnTitle in $ctrl.tableHeaders">
+            <td ng-repeat="columnTitle in $ctrl.tableHeaders" ng-if="columnTitle != 'merchantIDID'">
               <span class="line-break" ng-if="$ctrl.typeMap[columnTitle] === 'string'">
                 {{ data[columnTitle] | limitTo: $ctrl.maxLengthCell }}{{ data[columnTitle].length > $ctrl.maxLengthCell ? '...' : '' }}
 
