@@ -26,6 +26,8 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
     sort: '',
   };
 
+  vm.authToken = '';
+
   // Constants
   vm.maxLengthCell = 100;
   vm.viewsAvailable = constantsService.tableViewsAvailable;
@@ -244,7 +246,7 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
         //console.log(tableData);
         let testData = tableData[testRowIndex][currentHeader];
 
-        while (!testData && testData !== 0) {
+        while (!testData && testData !== 0 && testRowIndex < tableHeaders.length) {
           testRowIndex++;
           testData = tableData[testRowIndex][currentHeader];
         }
