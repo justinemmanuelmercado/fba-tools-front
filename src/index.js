@@ -1,5 +1,6 @@
 import angular from 'angular';
 import uiRouter from '@uirouter/angularjs';
+import ngCookies from 'angular-cookies';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/js/all';
 
@@ -13,6 +14,7 @@ import { router } from './router';
 import mainModule from './main/main';
 
 const myApp = angular.module('home', [
+  ngCookies,
   uiRouter,
   mainModule,
 ]);

@@ -9,7 +9,7 @@ import footerBar from './components/footerBar/footerBar';
 import tableDemo from './components/tableDemo/tableDemo';
 import loginComponent from './components/loginComponent/loginComponent';
 import sales from './components/sales/sales';
-import privacyPolicy from './components/privacyPolicy/privacyPolicy'
+import privacyPolicy from './components/privacyPolicy/privacyPolicy';
 
 /**
  * Import Services
@@ -22,6 +22,7 @@ import constantsService from './services/constantsService';
 import authenticationService from './services/authenticationService';
 import navigationService from './services/navigationService';
 import merchantService from './services/merchantService';
+import cookieHelper from './services/serviceHelper/cookieHelper';
 
 const mainModule = angular.module('main', [])
     /**
@@ -37,6 +38,7 @@ const mainModule = angular.module('main', [])
     /**
      * Inject Services
      */
+    .factory('cookieHelper', cookieHelper)
     .factory('pagerService', pagerService)
     .factory('requestsHelper', requestsHelper)
     .factory('rawRunnerService', rawRunnerService)

@@ -1,5 +1,4 @@
-const service = function service(requestsHelper) {
-
+const service = function service(requestsHelper, cookieHelper) {
     const rawQuerySelect = (query) => {
         const requestBody = {
             query,
@@ -7,8 +6,22 @@ const service = function service(requestsHelper) {
         return requestsHelper.post('raw', requestBody);
     };
 
-    const login = credentials => requestsHelper.post('accounts/login', credentials);
+    const login = credentials => {
+        return requestsHelper.post('accounts/login', credentials)
+            .then((login_response) => {
+                if (login_response.status == 200) {
+                    //if success store auth token
+                    cookieHelper.setUserAuthTokenToCookie(login_response.data.token);
+                }
+                return login_response;
+            });
+    };
+
     const register = userInfo => requestsHelper.post('accounts', userInfo);
+
+    const authenticateUser = userInfo => {
+        
+    }
 
     return {
         rawQuerySelect,
@@ -17,6 +30,6 @@ const service = function service(requestsHelper) {
     };
 };
 
-service.$inject = ['requestsHelper'];
+service.$inject = ['requestsHelper', 'cookieHelper'];
 
 module.exports = service;

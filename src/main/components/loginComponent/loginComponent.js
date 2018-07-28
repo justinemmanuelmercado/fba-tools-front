@@ -34,9 +34,12 @@ function ComponentController($scope, authenticationService, navigate, merchantSe
             //login logic here
             vm.loginPromise = authenticationService.login(creds)
                 .then((result) => {
-                    if (result.data) {
-                        navigate.toSales();
+                    if (result.status == 200) {
+                        //store token on localstorage
+                    } else {
+                        
                     }
+                    console.log(result);
                 })
                 .catch((err) => {
                     console.log(err);

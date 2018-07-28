@@ -46,9 +46,18 @@ const service = function service() {
   const API_HOME = 'http://localhost:3000/api/';
   // const API_HOME = 'https://localhost:3443/api/';
 
+  /* cookie */
+  var auth_cookie_config = {
+    name : 'user-auth-token-fba',
+    options : {
+      path : '/'
+    }
+  };
+
   return {
     tableViewsAvailable,
     API_HOME,
+    auth_cookie_config
   };
 };
 
