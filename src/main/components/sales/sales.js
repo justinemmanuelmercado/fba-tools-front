@@ -34,6 +34,10 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
 
   //vm.setPage = setPage; // @todo temporarily removed
 
+  vm.$onInit = function activate() {
+    vm.loadData();
+  };
+
   vm.loadData = () => {
     /**
      * @todo Make way to pass array of data, to cache data
@@ -220,10 +224,6 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
       return;
     }
     vm.objectFilter[columnTitle] = angular.copy(vm.tableHeaderFilters[columnTitle]);
-  };
-
-  vm.$onInit = function activate() {
-    vm.loadData();
   };
 
   vm.multipleSelectFilter = (item) => {

@@ -1,8 +1,6 @@
 const service = function service(constantsService, $cookies) {
 
     const setUserAuthTokenToCookie = auth_token => {
-        console.log("COOKIE!");
-        console.log($cookies);
         return $cookies.putObject(constantsService.auth_cookie_config.name, auth_token, constantsService.auth_cookie_config.options);
     };
 
