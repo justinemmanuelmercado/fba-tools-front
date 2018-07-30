@@ -246,9 +246,10 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
         //console.log(tableData);
         let testData = tableData[testRowIndex][currentHeader];
 
-        while (!testData && testData !== 0 && testRowIndex < tableHeaders.length) {
-          testRowIndex++;
+        //added tableData.length to avoid exceeding
+        while (!testData && testData !== 0 && testRowIndex < tableData.length) {
           testData = tableData[testRowIndex][currentHeader];
+          testRowIndex++; //moved increment after assigning testData
         }
 
         vm.typeMap[currentHeader] = dataTypeHelper.identifyDataType(testData);

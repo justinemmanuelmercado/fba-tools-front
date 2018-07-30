@@ -8,9 +8,14 @@ const service = function service(constantsService, $cookies) {
         return $cookies.getObject(constantsService.auth_cookie_config.name);
     };
 
+    const deleteUserAuthTokenFromCookie = () => {
+        return $cookies.remove(constantsService.auth_cookie_config.name);
+    }
+
     return {
         setUserAuthTokenToCookie,
-        getUserAuthTokenFromCookie
+        getUserAuthTokenFromCookie,
+        deleteUserAuthTokenFromCookie
     };
 };
 
