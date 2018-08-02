@@ -1,4 +1,4 @@
-<div class="tabs is-fullwidth is-toggle is-small">
+<div class="tabs is-fullwidth is-toggle is-small" ng-cloak>
   <ul>
     <li ng-class="{'is-active': $ctrl.isViewActive(view)}" ng-repeat="view in $ctrl.viewsAvailable" ng-click="$ctrl.openView(view)">
       <a>
@@ -14,10 +14,10 @@
 
 <!-- TABLE -->
 <!-- @todo SEPARATE TABLE COMPONENT SOMEHOW -->
-<div class="data-table">
+<div class="data-table" ng-cloak>
   <div class="columns">
     <div class="column">
-      <table class="table is-striped is-bordered is-narrow" ng-show="$ctrl.tableDataPromise.$$state.status">
+      <table class="table is-striped is-bordered is-narrow" ng-show="$ctrl.tableDataPromise.$$state.status" ng-cloak>
         <thead>
           <tr>
             <th ng-repeat="columnTitle in $ctrl.tableHeaders" ng-if="columnTitle != 'merchantIDID'">

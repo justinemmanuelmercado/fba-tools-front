@@ -19,6 +19,8 @@ import requestsHelper from './services/serviceHelper/requestsHelper';
 import pagerService from './services/pagerService';
 import dataTypeHelper from './services/commonHelper/dataTypeHelper';
 import constantsService from './services/constantsService';
+//user service - single instance ng user status i.e. logged in ba sya accross components
+import userService from './services/userService';
 import authenticationService from './services/authenticationService';
 import navigationService from './services/navigationService';
 import merchantService from './services/merchantService';
@@ -45,6 +47,7 @@ const mainModule = angular.module('main', [])
     .factory('dataTypeHelper', dataTypeHelper)
     .factory('authenticationService', authenticationService)
     .factory('constantsService', constantsService)
+    .factory('userService', userService)
     .factory('navigationService', navigationService)
     .factory('merchantService', merchantService);
 

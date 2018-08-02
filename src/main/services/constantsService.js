@@ -54,10 +54,19 @@ const service = function service() {
     }
   };
 
+  var logged_user_info_cookie = {
+    name : 'logged-user-info',
+    options : {
+        path : '/',
+        secure : true
+      }
+  };
+
   return {
     tableViewsAvailable,
     API_HOME,
-    auth_cookie_config
+    auth_cookie_config,
+    logged_user_info_cookie
   };
 };
 

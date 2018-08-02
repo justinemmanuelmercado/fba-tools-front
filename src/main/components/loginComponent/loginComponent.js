@@ -1,8 +1,9 @@
 import './loginComponent.css';
+import { rejects } from 'assert';
 
-ComponentController.$inject = ['$scope', 'authenticationService', 'navigationService', 'merchantService'];
+ComponentController.$inject = ['$scope', 'authenticationService', 'navigationService', 'merchantService', '$rootScope'];
 
-function ComponentController($scope, authenticationService, navigate, merchantService) {
+function ComponentController($scope, authenticationService, navigate, merchantService, $rootScope) {
     const vm = this;
 
     /** Promises **/
@@ -34,12 +35,12 @@ function ComponentController($scope, authenticationService, navigate, merchantSe
             //login logic here
             vm.loginPromise = authenticationService.login(creds)
                 .then((result) => {
-                    if (result.status == 200) {
-                        //store token on localstorage
+                    if (result == 200) {
+                        navigate.toSales();
                     } else {
-                        
+                        //do nothing
                     }
-                    console.log(result);
+                    //console.log(result);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -112,4 +113,5 @@ export default {
     template: require('./loginComponent.html'),
     controllerAs: '$ctrl',
     controller: ComponentController,
+    bindings : { view: '<'}
 };

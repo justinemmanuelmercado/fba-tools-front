@@ -1,9 +1,14 @@
 import numeral from 'numeral';
 import './sales.css';
 
-ComponentController.$inject = ['rawRunnerService', 'pagerService', 'dataTypeHelper', '$scope', 'constantsService'];
+ComponentController.$inject = [
+  'rawRunnerService', 'pagerService', 'dataTypeHelper', 
+  '$scope', 'constantsService', 'authenticationService', 
+  'navigationService', 'userService'];
 
-function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $scope, constantsService) {
+function ComponentController(rawRunnerService, pagerService, dataTypeHelper, 
+  $scope, constantsService, authenticationService, 
+  navigate, userService) {
   const vm = this;
 
   // Data
@@ -31,11 +36,21 @@ function ComponentController(rawRunnerService, pagerService, dataTypeHelper, $sc
   // Constants
   vm.maxLengthCell = 100;
   vm.viewsAvailable = constantsService.tableViewsAvailable;
+  vm.currentUser = userService.fac.GetCurrentUser();
+
 
   //vm.setPage = setPage; // @todo temporarily removed
 
   vm.$onInit = function activate() {
-    vm.loadData();
+    if (vm.currentUser) {
+      if (vm.currentUser.loggedIn) {
+        vm.loadData();
+      } else {
+        navigate.toHome();
+      }
+    } else {
+      navigate.toHome();
+    }
   };
 
   vm.loadData = () => {

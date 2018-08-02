@@ -1,11 +1,19 @@
-const service = function service($window) {
+const service = function service($window, $location, $state) {
 
     const toHome = () => {
-        $window.location.href = "#";
+        //$window.location.href = '#';
+        $location.path('/');
+
+        // $window.location.reload(true);
+        //$window.location.reload(true);
     };
 
     const toSales = () => {
-        $window.location.href = "#sales";
+        //$state.go('sales');
+        //$location.path('/sales');
+        $window.location.href = '#sales';
+        $window.location.reload(true);
+        //$window.location.reload(true);
     }
 
     return {
@@ -14,6 +22,6 @@ const service = function service($window) {
     };
 };
 
-service.$inject = ['$window'];
+service.$inject = ['$window', '$location', '$state'];
 
 module.exports = service;

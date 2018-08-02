@@ -14,4 +14,5 @@ export default {
     template: require('./rootComponent.html'),
     controllerAs: '$ctrl',
     controller: ComponentController,
+    bindings: { view: '<'}
 };

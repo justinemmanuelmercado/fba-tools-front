@@ -4,7 +4,7 @@ const service = function helperService($http, constantsService, cookieHelper) {
     var user_token = cookieHelper.getUserAuthTokenFromCookie();
     //if token is not empty then add to header of requests
     if (user_token && user_token != undefined) {
-        $http.defaults.headers.common.Authorization = cookieHelper.getUserAuthTokenFromCookie();
+        $http.defaults.headers.common.Authorization = "Bearer " + cookieHelper.getUserAuthTokenFromCookie();
     }
 
     const { API_HOME } = constantsService;
