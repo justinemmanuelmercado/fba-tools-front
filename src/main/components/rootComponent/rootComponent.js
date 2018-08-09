@@ -4,7 +4,7 @@ function ComponentController($scope) {
     const vm = this;
 
     $scope.massage = 'Hello';
-
+    //everytime narerefresh yung buong app dapat chinecheck kung may nakalogin o wala
     vm.message = 'World';
 }
 

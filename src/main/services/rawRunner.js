@@ -8,10 +8,12 @@ const service = function service(requestsHelper) {
     };
 
     const requestView = view => requestsHelper.post('raw/view', { view });
+    const requestTable = table => requestsHelper.post('raw/chart', { table });
 
     return {
         rawQuerySelect,
         requestView,
+        requestTable
     };
 };
 

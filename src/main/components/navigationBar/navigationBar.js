@@ -20,6 +20,7 @@ function ComponentController(authenticationService, navigate, userService, $root
         authenticationService.logout();
         vm.showLogout = false;
         navigate.toHome();
+        
         //logout amazon account
         //amazon.Login.logout();
     }

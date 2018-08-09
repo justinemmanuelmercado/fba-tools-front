@@ -1,13 +1,20 @@
 import './loginComponent.css';
 import { rejects } from 'assert';
+import { encode } from 'punycode';
 
-ComponentController.$inject = ['$scope', 'authenticationService', 'navigationService', 'merchantService', '$rootScope'];
+ComponentController.$inject = ['$scope', 'authenticationService', 'navigationService', 
+                                'merchantService', '$rootScope', 'awsService', '$state', '$location'];
 
-function ComponentController($scope, authenticationService, navigate, merchantService, $rootScope) {
+function ComponentController($scope, authenticationService, navigate,
+                             merchantService, $rootScope, awsService, $state, $location) {
     const vm = this;
 
     /** Promises **/
     vm.loginPromise = {};
+
+    /** Url Parameter **/
+    vm.awsAuth = $state.params.access_token;
+     //var awsAuth = {}
 
     vm.merchantDropdownList = [];
 
@@ -18,6 +25,12 @@ function ComponentController($scope, authenticationService, navigate, merchantSe
     vm.$onInit = function activate() {
         vm.activateAmazon();
         vm.getDropdownMerchantList();
+
+        var awsAuth = $location.search().access_token;
+        if (awsAuth) {
+            awsService.getProfileDetails(awsAuth);
+        }
+       //awsService.getProfileDetails();
     };
 
     /**
@@ -92,7 +105,7 @@ function ComponentController($scope, authenticationService, navigate, merchantSe
         document.getElementById('LoginWithAmazon').onclick = function () {
             let options = { scope: 'profile' };
             amazon.Login.authorize(options,
-                'http://localhost:2992');
+                'http://localhost:2992/#/login');
             return false;
         };
 

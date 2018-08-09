@@ -3,6 +3,7 @@ import uiRouter from '@uirouter/angularjs';
 import ngCookies from 'angular-cookies';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/js/all';
+import 'chart.js/dist/Chart.min.js';
 
 import 'angular/angular-csp.css';
 import './index.scss';

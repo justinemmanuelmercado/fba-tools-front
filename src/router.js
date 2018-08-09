@@ -21,7 +21,7 @@ const router = ($stateProvider, $locationProvider, $urlRouterProvider) => {
         },
         {
             name: 'login-component',
-            url: 'login',
+            url: 'login?access_token',
             template: '<login-component></login-component>',
             data: { auth : "" }
         },
@@ -30,6 +30,12 @@ const router = ($stateProvider, $locationProvider, $urlRouterProvider) => {
             url: 'sales',
             template: '<sales></sales>',
             data: { auth : "LoggedUser" }
+        },
+        {
+            name: 'charts',
+            url: 'charts',
+            template: '<charts-component></charts-component>',
+            data: { auth : "" }
         },
         {
             name: 'privacy-policy',
